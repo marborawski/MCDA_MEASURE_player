@@ -35,12 +35,12 @@ function [m]=AHP(E,W,PrefDirection,max_)
   for ii = 1:length(C)
     [a,b] = eig(C{ii});
     b = diag(b);
-    p = find(imag(b) >= 0.00000001);
+    p = find(abs(imag(b)) >= 0.00000001);
     b(p) = -inf;
     [~,ind] = max(b);
-    W = a(:,ind);
-    W = W/sum(W);
-    C{ii} = W;
+    W2 = a(:,ind);
+    W2 = W2/sum(W2);
+    C{ii} = W2;
   end
   
  % Calculating the measure value
