@@ -1,4 +1,6 @@
 %main file
+% Octave use install instrument-control and run:
+% pkg load instrument-control
 
 clear all;
 close all;
@@ -41,48 +43,38 @@ SendData(IPAddressSend,portSend,txt,'Command','name="SetTowers"');
 
 
 %Rounds of the game - read data from XML
-if exist('OCTAVE_VERSION', 'builtin') ~= 0;
-  load dataTower;
-else
-  dataTower=readstruct('towers.xml');
-end
+dataTower = fileread('towers.xml');
+dataTower = ParseXML(dataTower);
 
 %Start rounds
-NoOfRounds=sum(~cellfun(@isempty,{dataTower.TowerCoordinates.Element.noAttribute}));
+NoOfRounds=length(dataTower.Answer.TowerCoordinates{1}.Element);
 for i=1:NoOfRounds
     %Placing tower on the board
-    x=dataTower.TowerCoordinates.Element(i).xAttribute;
-    y=dataTower.TowerCoordinates.Element(i).yAttribute;
-    no=dataTower.TowerCoordinates.Element(i).noAttribute;
+    x=dataTower.Answer.TowerCoordinates{1}.Element{i}.x;
+    y=dataTower.Answer.TowerCoordinates{1}.Element{i}.y;
+    no=dataTower.Answer.TowerCoordinates{1}.Element{i}.no;
     txt = AddTower(0,x,y);
     errorAddTower = SendData(IPAddressSend,portSend,txt,'Command','name="AddTower"');
     choiceOfPathData = SendData(IPAddressSend,portSend,[],'Command','name="GetChoiceOfPathData"');    
     
     %Reading alternative statistics
     levelData = SendData(IPAddressSend,portSend,[],'Command','name="LevelData"');
-    if exist('OCTAVE_VERSION', 'builtin') ~= 0;
-      load data;
-    else
-      fid = fopen('tmp.xml','w');
-      bytes = fprintf(fid,'%s',levelData);
-      fclose(fid);
-      data=readstruct('tmp.xml');
-    end
+    data = ParseXML(levelData);
 
     %Preparation of decision matrix based on the read statistics
-    NoOfAlternatives=sum(~cellfun(@isempty,{data.LevelPath.Path.costAttribute}));
+    NoOfAlternatives=length(data.Answer.LevelPath{1}.Path);
     %Criterion 1
-    E=[data.LevelPath.Path.costAttribute]';
+    E=[GetVectorFromCell(data.Answer.LevelPath{1}.Path,'cost')]';
     %Criterion 2
-    E=[E [data.LevelPath.Path.shotAtTilesAttribute]'];
+    E=[E [GetVectorFromCell(data.Answer.LevelPath{1}.Path,'shotAtTiles')]'];
     %Criterion 3
-    E=[E [data.LevelPath.Path.towersAttribute]'];
+    E=[E [GetVectorFromCell(data.Answer.LevelPath{1}.Path,'towers')]'];
     %Criterion 4
-    sumTowerPlace=[data.LevelPath.Path.sumTowerPlaceAttribute]';
+    sumTowerPlace=[GetVectorFromCell(data.Answer.LevelPath{1}.Path,'sumTowerPlace')]';
     if exist('OCTAVE_VERSION', 'builtin') ~= 0;
-      TowerNumsCashCost=round(data.LevelPath.Towers.cashAttribute/data.LevelPath.Tower.costAttribute);
+      TowerNumsCashCost=round(data.Answer.LevelPath{1}.Towers{1}.cash/data.Answer.LevelPath{1}.Tower{1}.cost);
     else
-      TowerNumsCashCost=round(data.LevelPath.Towers.cashAttribute/data.LevelPath.Tower.costAttribute,TieBreaker="minusinf"); 
+      TowerNumsCashCost=round(data.LevelPath{1}.Towers{1}.cash/data.LevelPath{1}.Tower{1}.cost,TieBreaker="minusinf"); 
     end
     TowerNumsCashCost=ones(NoOfAlternatives,1)*TowerNumsCashCost;
     E=[E min([sumTowerPlace TowerNumsCashCost],[],2)];
@@ -90,8 +82,8 @@ for i=1:NoOfRounds
     EndBeginRatio=[];%jeżeli nie ma przejścia to wstaw 1
     EndStartHealthRatio=[];
     for j=1:NoOfAlternatives
-        EndBeginRatio=[EndBeginRatio;[data.LevelPath.Path(j).End.Enemy.enemiesAttribute]./[data.LevelPath.Path(j).Begin.Enemy.enemiesAttribute]];
-        EndStartHealthRatio=[EndStartHealthRatio;[data.LevelPath.Path(j).End.Enemy.endMeanHealthAttribute]./[data.LevelPath.Enemy.startHealthAttribute]];
+        EndBeginRatio=[EndBeginRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'enemies')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.Begin{1}.Enemy,'enemies')]];
+        EndStartHealthRatio=[EndStartHealthRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'endMeanHealth')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Enemy,'startHealth')]];
     end
     E=[E EndBeginRatio EndStartHealthRatio];%C5-C6 C7-C8
     E(isnan(E))=0;
@@ -117,9 +109,9 @@ for i=1:NoOfRounds
     [E,W,PrefDirection] = RemoveCriteria(E,W,PrefDirection);
 %    [Score]=PROMETHEE(E,W,PrefDirection);
 %    [Score]=TOPSIS(E,W,PrefDirection,2);%Im wyższa wartość tym lepiej
-    [Score]=VIKOR(E,W,PrefDirection,0.5);%Im wyższa wartość tym lepiej
+%    [Score]=VIKOR(E,W,PrefDirection,0.5);%Im wyższa wartość tym lepiej
 %    [Score]=VMCM(E,W,PrefDirection);%Im wyższa wartość tym lepiej
-%     [Score]=AHP(E,W,PrefDirection,10);%Im wyższa wartość tym lepiej
+     [Score]=AHP(E,W,PrefDirection,10);%Im wyższa wartość tym lepiej
     [~,rank]=sort(Score,'descend');
     i
     E
@@ -133,6 +125,7 @@ for i=1:NoOfRounds
     pause;
     i=i+1;
 end
+
 
 
 
