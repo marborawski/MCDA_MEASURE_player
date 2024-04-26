@@ -14,14 +14,14 @@ function [S]=TOPSIS(E,W,PrefDirection,p)
       E(ii,jj) = E(ii,jj)/n(jj);
 		end
 	end
-  
+
 %Weight calculation
 	for ii=1:size(E,1)
 		for jj=1:size(E,2)
       E(ii,jj) = E(ii,jj)*W(jj);
 		end
 	end
-  
+
   %Pattern and anti-pattern calculation
   start = 1;
   for ii = 1:size(E,1)
@@ -49,7 +49,7 @@ function [S]=TOPSIS(E,W,PrefDirection,p)
       end
     end
   end
-  
+
   %Calculating the measure value
   dPlus = zeros(1,size(E,1));
   dMinus = zeros(1,size(E,1));
@@ -57,6 +57,6 @@ function [S]=TOPSIS(E,W,PrefDirection,p)
     dPlus(ii) = sum(abs(E(ii,:)-vPlus).^p)^(1/p);
     dMinus(ii) = sum(abs(E(ii,:)-vMinus).^p)^(1/p);
   end
-  S = dMinus./(dPlus - dMinus);
-  
+  S = dMinus./(dPlus + dMinus);
+
 end
