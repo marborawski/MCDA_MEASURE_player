@@ -46,6 +46,7 @@ SendData(IPAddressSend,portSend,txt,'Command','name="SetTowers"');
 dataTower = fileread('towers.xml');
 dataTower = ParseXML(dataTower);
 
+scoreArray = [];
 %Start rounds
 NoOfRounds=length(dataTower.Answer.TowerCoordinates{1}.Element);
 for i=1:NoOfRounds
@@ -108,10 +109,10 @@ for i=1:NoOfRounds
     PrefDirection=[2 2 2 2 1 1 1 1];
     [E,W,PrefDirection] = RemoveCriteria(E,W,PrefDirection);
 %    [Score]=PROMETHEE(E,W,PrefDirection);
-%    [Score]=TOPSIS(E,W,PrefDirection,2);%Im wyższa wartość tym lepiej
+    [Score]=TOPSIS(E,W,PrefDirection,2);%Im wyższa wartość tym lepiej
 %    [Score]=VIKOR(E,W,PrefDirection,0.5);%Im wyższa wartość tym lepiej
 %    [Score]=VMCM(E,W,PrefDirection);%Im wyższa wartość tym lepiej
-     [Score]=AHP(E,W,PrefDirection,10);%Im wyższa wartość tym lepiej
+%     [Score]=AHP(E,W,PrefDirection,10);%Im wyższa wartość tym lepiej
     [~,rank]=sort(Score,'descend');
     i
     E
@@ -122,11 +123,21 @@ for i=1:NoOfRounds
     trackNumber=rank(1)-1;
     txt = StartEnemy(1,trackNumber,trackNumber);
     errorStartEnemy = SendData(IPAddressSend,portSend,txt,'Command','name="StartEnemy"');
-    pause;
+    
+    scoreArray = [scoreArray;Score];
+%    pause;
     i=i+1;
 end
 
+columnDescriptions{1} = 'Nr.';
+for ii = 1:size(scoreArray,2)
+  columnDescriptions{ii + 1} = ['Path no ' num2str(ii)];
+end
+for ii = 1:size(scoreArray,1)
+  rowDescriptions{ii} = num2str(ii);
+end
 
+GenerateTabular('../Latex/Table/Score.tex',scoreArray,columnDescriptions,rowDescriptions,0,3)
 
 
 
