@@ -136,11 +136,11 @@ end
 for ii = 1:size(scoreArray,1)
   rowDescriptions{ii} = num2str(ii);
 end
-
 GenerateTabular('../Latex/Table/Score.tex',scoreArray,columnDescriptions,rowDescriptions,0,3)
 
-
-
-
-
+columnDescriptions{1} = 'Nr.';
+for ii = 1:size(scoreArray,2)
+  columnDescriptions{ii + 1} = ['Path' num2str(ii)];
+end
+GenerateTikzData('../Latex/Fig/Score.dat',[[1:size(scoreArray,1)]' scoreArray],columnDescriptions)
 
