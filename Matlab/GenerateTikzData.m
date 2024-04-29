@@ -1,4 +1,9 @@
 function GenerateTikzData(fileName,data,columnDescriptions)
+%Generating data files for tikz charts
+%
+% fileName           - name of the file to which the array will be saved
+% data               - saved array
+% columnDescriptions - column descriptions
 
   fid = fopen(fileName,'w');
   for ii = 1:length(columnDescriptions)

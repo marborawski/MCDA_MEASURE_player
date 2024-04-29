@@ -1,7 +1,6 @@
-function txt = SetEnemies(no,count,speed,startHealth,armour,cost,destroyCoins,coinsToEnd,type, tag)
+function txt = SetEnemies(count,speed,startHealth,armour,cost,destroyCoins,coinsToEnd,type, tag)
 % Creating information in the form of XML about a specific type of opponent
 %
-% no           - opponent type number
 % count        - maximum number of opponents
 % speed        - opponent's speed
 % startHealth  - opponent's starting life value
@@ -13,6 +12,7 @@ function txt = SetEnemies(no,count,speed,startHealth,armour,cost,destroyCoins,co
 % tag          - name of the object type
 % returns information saved in xml format
 
+    no = 0;
     txt = sprintf('\t<SetEnemies>');  
     txt = [txt, sprintf('\t\t<Enemy no="%d" count="%d" speed="%d" startHealth="%d" armour="%d" cost="%d" destroyCoins="%d" coinsToEnd="%d" type="%s" tag="%s">',no,count,speed,startHealth,armour,cost,destroyCoins,coinsToEnd,type, tag)];  
     txt = [txt, sprintf('\t\t</Enemy>')];

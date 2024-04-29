@@ -1,10 +1,10 @@
-function txt = StartEnemy(noEnemy,beginNo,endNo)
+function txt = StartEnemy(beginNo,endNo)
 % Creating an opponent and sending him out along a selected path
 %
-% noEnemy - opponent type number
 % beginNo - starting point number
 % endNo   - endpoint number
 % returns information saved in xml format
+    noEnemy = 0;
     txt = sprintf('\t<StartEnemy no="%d">',noEnemy);  
     txt = [txt, sprintf('\t\t<Begin no="%d">',beginNo)];  
     txt = [txt, sprintf('\t\t</Begin>')];

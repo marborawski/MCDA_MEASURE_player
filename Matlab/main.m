@@ -35,10 +35,10 @@ tilemapNames = ChangeBeginEnd(tilemapNames);
 txt = TilemapToXML(tilemapNames);
 SendData(IPAddressSend,portSend,txt,'Tilemap',[]);
 
-txt = SetEnemies(1,-1,2,20,2,30,30,40,'Paper','Enemy');
+txt = SetEnemies(-1,2,20,2,30,30,40,'Paper','Enemy');
 SendData(IPAddressSend,portSend,txt,'Command','name="SetEnemies"');
 
-txt = SetTowers(0,-10,1000,1,1000,5,10,'Tower','Enemy');
+txt = SetTowers(-10,1000,1,1000,5,10,'Tower','Enemy');
 SendData(IPAddressSend,portSend,txt,'Command','name="SetTowers"');
 
 
@@ -121,7 +121,7 @@ for i=1:NoOfRounds
      
     %launching the enemy
     trackNumber=rank(1)-1;
-    txt = StartEnemy(1,trackNumber,trackNumber);
+    txt = StartEnemy(trackNumber,trackNumber);
     errorStartEnemy = SendData(IPAddressSend,portSend,txt,'Command','name="StartEnemy"');
     
     scoreArray = [scoreArray;Score];
