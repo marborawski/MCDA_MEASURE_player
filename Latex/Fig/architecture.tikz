@@ -1,0 +1,10 @@
+\begin{tikzpicture}
+\node[rectangle,draw,minimum width = 3.5cm,minimum height = 1.5cm] (r) at (-2.5,4.5) {Matlab/Octave};
+\node[anchor=center,inner sep=0,label=above:{Game}] (game) at (4,4.5) {\includegraphics[width=3cm]{images/game.png}} ;
+\node[anchor=center,inner sep=0, label=below:{Latex tabular}] (tabaular) at (-4.5,1) {\includegraphics[height=2.5cm]{images/latexTabular.png}};
+\node[anchor=center,inner sep=0,label=below:{Latex tikz}] (tikz) at (-0.5,1) {\includegraphics[height=2.5cm]{images/latexTikz.png}};
+\draw[oneArrowinverseStyle] (r.east) + (0,-0.1) -- ++(3.3,-0.1) node[midway,below]{Answer};
+\draw[oneArrowStyle] (r.east) + (0,0.1) -- ++(3.3,0.1) node[midway,above]{Command};
+\draw[oneArrowStyle] (r) -- (tabaular);
+\draw[oneArrowStyle] (r) -- (tikz);
+\end{tikzpicture}

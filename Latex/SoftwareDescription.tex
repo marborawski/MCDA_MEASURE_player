@@ -4,6 +4,25 @@
 \textit{Describe the software. Provide enough detail to help the reader understand its impact. }
 
 \subsection{Software architecture}
+
+Oprogramowanie \SoftwareName wykorzystuje platformę programistyczną Matlab/Octave oraz silnik gier Unity. Część przeznaczona  dla silnika gier jest napisana w języku C\verb|#|. Implementuje mechanikę rozgrywki w grę typu tower defense. Rolę gracza pełni oprogramowanie napisane w języku Matlab. Komunikacja między oprogramowaniem w Matlab-ie a grą odbywa się na zasadzie kilent-serwer  (fig.~\ref{Fig:architecture}). Gra oczekuje na polecenia nasłuchując na wybranym porcie. Możliwa jest komunikacja zdalna poprzez internet. Oprogramowanie w Matlab-ie  jest zbiorem funkcji pozwalających na realizację badań metod decyzyjnych. Umożliwia pobieranie od gry aktualnych informacje o jej stanie i pozwala na  przekazywanie jej komend sterujących realizujących akcje stawianie nowych wież na planszy oraz wypuszczania nowych przeciwników. 
+
+\begin{figure}
+\input{fig/architecture.tikz}
+\caption{Architektura systemu}
+\label{Fig:architecture}
+\end{figure}
+
+Rysunek~\ref{Fig:softwareArchitecture} przedstawia ważniejsze moduły gry tower defense. Jednym z najważniejszych jej elementów jest komponent UnityServer realizujący wymianę informacji w formacie XML z oprogramowaniem działającym na platformie programistycznej Matlab. Moduł ten dekoduje otrzymane rozkazy i w zależności od potrzeb komunikuje się z innymi komponentami przekazując im zadania i zbierając potrzebne dane. Komponent ManagementTilemap zajmuje się zarządzaniem najmniejszymi elementami mapy -- tile. Zleca komponentowi CreateTilemap wykonanie tilemap w oparciu o dostępne tile. Gromadzi informacje statystyczne związane z wydarzeniami na kafelkach takich jak przejście  przeciwnika, zabicie przeciwnika itp. Przechowuje informacje o różnych typach tile, a w tym o ich wyglądzie (ma dostęp do ich modeli 3D). Zleca komponentowi ManagementCost wyznaczenie optymalnej trasy ruchu minimalizującej koszt przejścia od punktu startowego do końcowego. Komponent Towers przechowuje informacje o wieży, jej parametrach oraz wyglądzie. Podobnie komponent EnemyInfo przechowuje informacje o przeciwniku, jego parametrach oraz wyglądzie. Komponent ManagementCash zajmuje się zarządzaniem cash. Wyznacza ile cash mają wieże ile przeciwnicy i jest odpowiedzialny za prezentowanie tej informacji na HUD-ie i jej aktualizację.  
+
+\begin{figure}
+\input{fig/softwareArchitecture.tikz}
+\caption{Software architecture}
+\label{Fig:softwareArchitecture}
+\end{figure}
+
+
+
 \textit{  Give a short overview of the overall software architecture; provide a pictorial overview where possible; for example, an image showing the components. If necessary, provide implementation details.}
 
  \subsection{Software functionalities}
