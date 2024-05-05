@@ -26,6 +26,26 @@ Rysunek~\ref{Fig:softwareArchitecture} przedstawia ważniejsze klasy gry tower d
 \textit{  Give a short overview of the overall software architecture; provide a pictorial overview where possible; for example, an image showing the components. If necessary, provide implementation details.}
 
  \subsection{Software functionalities}
+ 
+ Funkcjonalności oprogramowania \SoftwareName:
+ \begin{enumerate}
+  \item Tworzenie planszy gry typu tower defense z dowolną liczba tras przejścia;
+  \item Możliwość planowania czasu i miejsca dostawiania wież;
+  \item Możliwość decydowanie przez metody decyzyjne którą ścieżką będą poruszać się przeciwnicy;
+  \item Tworzenie statystyk związanych z przejściami przeciwników przez ścieżkę;
+  \item Tworzenie tabel i wykresów umożliwiających porównanie badanych metod.
+\end{enumerate}
+
+Projektowanie planszy gry wymaga stworzenia modeli przeciwnika, wieży oraz kafelków (terenu i drogi). Modele takie można stworzyć wykorzystując dowolne oprogramowanie do modelowania obiektów 3D. Przykładem  takiego oprogramowania jest Blender zaliczany do kategorii wolnego i otwartego oprogramowania. Podstawowy zestaw modeli został już wykonany i dołączony do projektu Unity. Są to modele do gry tower defense w której wieże strzelają do śmieci płynących rzeką. Jeżeli istnieje taka konieczność modele te można zmienić z poziomu edytora Unity. 
+ 
+Plansza gry jest tworzona na podstawie przesłanych jej danych w formie XML-a. Zawierają one informacje o rodzaju kafelków (teren, droga) i punktach startowych oraz końcowych. Wizualizacja planszy jest tworzona automatycznie z dostępnych modeli 3D.
+
+Postawienie wieży jest realizowane w momencie otrzymania przez grę komendy zapisanej w formacie XML-a. Do komendy dołączana jest informacja o położeniu wieży. Podobnie wysłanie przeciwnika jest realizowane poprzez wysłanie komendy z dołączonymi informacjami o punktach startowych i końcowych ścieżki po których będzie się on poruszał.
+
+W każdej chwili można grze wysłać polecenie przesłanie informacji o stanie gry.  Informacje zwracane są formacie XML-a, dotyczą między innymi długości ścieżek, liczby wież przy ścieżkach, liczby przeciwników, którzy wystartowali z punktu startowego, liczby przeciwników, którzy dotarli do punktu końcowego, poziom życia z jakim dotarli do punktu końcowego, liczby pocisków, które trafiły przeciwnika na określonej ścieżce, liczby pocisków, które nie trafiły przeciwnika na określonej ścieżce, dostępny cash dla przeciwników, dostępny cash dla wież. Możliwe jest także wysłanie komendy z informacjami uszczegółowionymi, które zawierają dodatkowo położenie wszystkich kafelków dróg, parametry wież i parametry przeciwników.
+ 
+ Biblioteka dla środowiska Matlab/Octave zawiera głównie funkcje ułatwiające komunikację grą. Przygotowuje dane w formacie xml dla tworzenia planszy, stawiania nowych wież i wypuszczania przeciwników. Pozwala na dekodowanie danych w formie XML do postaci ułatwiającej manipulowanie nimi w Matlab-ie. Dodatkowo biblioteka zawiera metody pozwalające na konwersję tablicy do środowiska tabular Latex-a oraz formy akceptowalnej przez moduł tworzenia wykresów pakietu tikz-a.   
+ 
 \textit{  Present the major functionalities of the software.}
 
  \subsection{Sample code snippets analysis (optional)}
