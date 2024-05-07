@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--  Komenda dla serwera.  SetEnemies oznacza nakaz zdefiniowania typow przeciwnikow.  -->
+<Command name="SetEnemies">
+<!--  Lista typow przeciwnikow.  -->
+	<SetEnemies>
+<!--  Definicja typu przeciwnika. no - numer typu, count - maksymalna liczba przeciwnikow (wartosc ujemna oznacza dowolna liczbe przeciwnikow), speed - szybkosc przemieszczania sie przeciwnikow, startHealth - ilosc poczatkowego zycia, armour - stopien odpornosci na strzaly wiez, cost - koszt stworzenia i wyslania przeciwnika, destroyCoins - kwota jaka dostaja wieze za zniszczenie przeciwnika, coinsToEnd - kwota jaka dostaja  przeciwnicy za dotarcie przeciwnika do punktu koncowego, type - nazwa typu przeciwnika, tag - nazwa rodzaju obiektu.  -->
+			<Enemy no="1" count="-1" speed="2" startHealth="20" armour="2" cost="30" destroyCoins="30" coinsToEnd="40" type="Paper" tag="Enemy">
+			</Enemy>
+		</SetEnemies>
+</Command>
+</Data>

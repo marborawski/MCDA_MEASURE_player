@@ -1,7 +1,7 @@
 function txt = TilemapToXML(tilemap)
-%Map conversion from an array of numbers to xml format
+%Map conversion from an array to xml format
 %
-% tilemap - map in the form of an array of numbers
+% tilemap - map in the form of an array
 % returns a map saved in xml format
 
   txt = sprintf('\t<Table>');

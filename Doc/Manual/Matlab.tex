@@ -1,0 +1,366 @@
+\section{Biblioteka}
+
+Biblioteka jest stanowi zbiór funkcji wspomagających komunikację z grą oraz tworzenie tabel i wykresów. Funkcje te działają zarówno w środowisku Matlab jak i Octave.
+
+\paragraph{SendData} \hspace{0pt} \\
+Sending data to the server.
+
+%\subparagraph{Syntax}\hspace{0pt} \\
+\begin{lstlisting}[style=Matlab-editor]
+txt = SendData(IPAddressSend,portSend,data,name, args)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item  IPAddressSend -- server ip address,
+\item  portSend -- server port,
+\item  data -- data packet sent to the server,
+\item  name  -- control information sent to the server,
+\item  args  -- arguments related to control information.
+\end{itemize}
+
+Returns the response from the server in xml format.
+
+\paragraph{NumberToName} \hspace{0pt} \\
+Zamienia tablicę dwuwymiarową w tablicę struktur. Replacing numbers representing field types with their names.
+\begin{lstlisting}[style=Matlab-editor]
+result = NumberToName(array, names)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item  array -- a table containing information about the map,
+\item  names -- map field names.
+\end{itemize}
+
+Returns a table containing information about the map.
+
+\paragraph{ChangeBeginEnd} \hspace{0pt} \\
+Marking the beginnings and ends of paths.
+\begin{lstlisting}[style=Matlab-editor]
+result = ChangeBeginEnd(array)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item  array -- a table containing information about the map.
+\end{itemize}
+
+Returns a table containing information about the map.
+
+\paragraph{TilemapToXML} \hspace{0pt} \\
+Map conversion from an array to xml format.
+\begin{lstlisting}[style=Matlab-editor]
+txt = TilemapToXML(tilemap)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item  tilemap -- map in the form of an array.
+\end{itemize}
+
+Returns a map saved in xml format.
+
+Przykład przesłania do gry polecenia utworzenia planszy:
+\begin{lstlisting}[style=Matlab-editor]
+%Adres serwera
+IPAddressSend = '127.0.0.1';
+%Port na ktorym nasluchuje serwer
+portSend = 55001;
+%Tablica reprezentujaca plansze gry w ktorej liczby reprezentuja typy tiles (1 - ziemia, 2 - woda bedaca elementem sciezki ruchu przeciwnikow, 3 - poczatek sciezki, 4 - koniec sciezki) 
+tilemap = [1	3	1	3	1	1	1	1	1	1	1	3	1	1	1 1;
+           	1	2	1	2	1	1	1	1	1	1	1	2	1	1	1 1;
+           	1	2	1	2	1	1	1	1	3	1	2	2	1	1	1 1;
+           	1	2	1	2	1	1	1	1	2	1	2	1	1	1	1 1;
+           	1	2	1	2	1	1	1	1	2	1	2	1	1	1	1 1;
+           	1	2	1	2	2	1	1	1	2	1	2	2	1	1	1 1;
+           	1	2	1	1	2	1	1	2	2	1	1	2	1	1	1 1;
+           	1	2	1	2	2	1	1	2	1	1	2	2	1	1	1 1;
+           	1	2	1	2	1	1	1	2	1	1	2	1	1	1	1 1;
+           	1	2	1	2	1	1	1	2	2	1	2	2	2	2	1 1;
+           	1	2	1	2	1	1	1	1	2	1	1	1	1	2	2 1;
+           	1	2	1	2	2	1	1	1	2	2	4	1	1	1	2 1;
+           	1	4	1	1	4	1	1	1	1	1	1	1	1	1	4 1];
+%Nazwy typow tiles. Pozycja w tablicy odpowiada numerowi z tablicy tilemap
+names{1} = 'Ground';
+names{2} = 'Water';
+names{3} = 'Begin';
+names{4} = 'End';
+%Obrot tablicy tak aby orientacja tablicy odpowiadala orientacji planszy w grze
+tilemap = rot90(rot90(rot90(tilemap)));
+% Zamiana tablicy na tablice struktur z nazwami tiles zamiast numerow
+tilemapNames = NumberToName(tilemap,names);
+%Zamiana nazw tiles Begin i End na Water. Przypisanie tym tiles oznaczenia poczatku lub konca sciezki.
+tilemapNames = ChangeBeginEnd(tilemapNames);
+%Zamiana tablicy sturktur na tekst w formacie xml.
+txt = TilemapToXML(tilemapNames);
+%Wyslanie polecenia utworzenia nowej planszy (Tilemap) oraz danych w formacie xml do gry.
+SendData(IPAddressSend,portSend,txt,'Tilemap',[]);
+\end{lstlisting}
+
+\paragraph{ParseXML} \hspace{0pt} \\
+Parses text containing xml.
+\begin{lstlisting}[style=Matlab-editor]
+result = ParseXML(data)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item data -- a text array containing data in xml format.
+\end{itemize}
+
+Returns an array of structures whose structure reflects the structure of the XML data, the field names are the names of the XML elements.
+
+Przykład odczytania i zdekodowania pliku xml:
+\begin{lstlisting}[style=Matlab-editor]
+%Odczytanie pliku xml
+dataTower = fileread('towers.xml');
+%Konwersja pliku xml
+dataTower = ParseXML(dataTower);
+\end{lstlisting}
+
+Zawartość pliku towers.xml:
+\lstinputlisting[language=XML]{xml/towersBib.xml}
+
+Plik towers.xml zawiera współrzędne wież i ich numery porządkowe. Przykład dostępu do tych danych:
+\begin{lstlisting}[style=Matlab-editor]
+x=dataTower.Answer.TowerCoordinates{1}.Element{i}.x;
+y=dataTower.Answer.TowerCoordinates{1}.Element{i}.y;
+no=dataTower.Answer.TowerCoordinates{1}.Element{i}.no;
+\end{lstlisting}
+
+\paragraph{GetVectorFromCell} \hspace{0pt} \\
+Reading a data vector from a selected field of the structure array.
+\begin{lstlisting}[style=Matlab-editor]
+res = GetVectorFromCell(data, field)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item data -- structure array,\item field -- read structure fields.
+\end{itemize}
+
+Returns a data vector.
+
+Przykład odczytania współrzędnych x wież jako tablicy:
+\begin{lstlisting}[style=Matlab-editor]
+%Odczytanie pliku xml
+dataTower = fileread('towers.xml');
+%Konwersja pliku xml
+dataTower = ParseXML(dataTower);
+%Odczytanie wspolrzednych x wiez jako tablicy
+x = GetVectorFromCell(dataTower.Answer.TowerCoordinates{1}.Element,'x');
+\end{lstlisting}
+
+Zawartość pliku towers.xml:
+\lstinputlisting[language=XML]{xml/towersBib.xml}
+
+\paragraph{SetEnemies} \hspace{0pt} \\
+Creating information in the form of XML about a specific type of opponent.
+\begin{lstlisting}[style=Matlab-editor]
+txt = SetEnemies(count,speed,startHealth,armour,cost,destroyCoins,coinsToEnd,type,tag)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item count -- maximum number of opponents,
+\item speed -- opponent's speed,
+\item startHealth -- opponent's starting life value,
+\item armour -- enemy's armor (bullet resistance),
+\item cost -- the cost of creating and sending an enemy,
+\item destroyCoins -- profit for the tower manager for shooting down an enemy,
+\item coinsToEnd -- gain for the opponent's manager if he reaches the end of the path,
+\item type -- opponent type,
+\item tag -- name of the object type.
+\end{itemize}
+
+Returns information saved in xml format.
+
+Przykład przesłania do gry polecenia utworzenia nowego typu przeciwnika:
+\begin{lstlisting}[style=Matlab-editor]
+%Adres serwera
+IPAddressSend = '127.0.0.1';
+%Port na ktorym nasluchuje serwer
+portSend = 55001;
+%Utworzenie danych w formacie xml dotyczacych nowego typu przeciwnika
+txt = SetEnemies(-1,2,20,2,30,30,40,'Paper','Enemy');
+%Wyslanie polecenia (Command) utworzenia nowego typu przeciwnika (SetEnemies)
+SendData(IPAddressSend,portSend,txt,'Command','name="SetEnemies"');
+\end{lstlisting}
+
+\paragraph{SetTowers} \hspace{0pt} \\
+Creating information in the form of XML about a specific type of tower.
+\begin{lstlisting}[style=Matlab-editor]
+txt = SetTowers(count,speed,rateOfFire,force,bulletStrength,cost,type,tag)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item count -- maximum number of towers,
+\item speed -- the rotation speed of the towers,
+\item rateOfFire -- rate of fire towers,
+\item force -- turret firing power (determines range),
+\item bulletStrength -- turret projectile strength (affects the number of wounds dealt to the enemy),
+\item cost -- cost of creating a tower,
+\item type -- tower type,
+\item tag -- the type of object that the tower will attack.
+\end{itemize}
+
+Returns information saved in xml format.
+
+Przykład przesłania do gry polecenia utworzenia nowego typu wieży:
+\begin{lstlisting}[style=Matlab-editor]
+%Adres serwera
+IPAddressSend = '127.0.0.1';
+%Port na ktorym nasluchuje serwer
+portSend = 55001;
+%Utworzenie danych w formacie xml dotyczacych nowego typu wiezy
+txt = SetTowers(-10,1000,1,1000,5,10,'Tower','Enemy');
+%Wyslanie polecenia (Command) utworzenia nowego typu wiezy (SetTowers)
+SendData(IPAddressSend,portSend,txt,'Command','name="SetTowers"');
+\end{lstlisting}
+
+\paragraph{StartEnemy} \hspace{0pt} \\
+
+Creating an opponent and sending him out along a selected path.
+\begin{lstlisting}[style=Matlab-editor]
+txt = StartEnemy(beginNo,endNo)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item beginNo -- starting point number,
+\item endNo -- endpoint number.
+\end{itemize}
+
+Returns information saved in xml format.
+
+Przykład utworzenia przeciwnika i wysłania go z punktu startowego 1 do punktu końcowego 3: 
+\begin{lstlisting}[style=Matlab-editor]
+%Adres serwera
+IPAddressSend = '127.0.0.1';
+%Port na ktorym nasluchuje serwer
+portSend = 55001;
+%Utworzenie danych w formacie xml zawierajacych informacje o punkcie startowym i koncowym
+txt = StartEnemy(1,3);
+%Wyslanie polecenia (Command) utworzenia przeciwnika i wyslania go od wskazanego punktu startowego do wskazanego punktu koncowego (StartEnemy)
+errorStartEnemy = SendData(IPAddressSend,portSend,txt,'Command','name="StartEnemy"');
+\end{lstlisting}
+
+\paragraph{AddTower} \hspace{0pt} \\
+
+Adding a tower.
+\begin{lstlisting}[style=Matlab-editor]
+txt = AddTower(noTower,x,y)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item noTower -- tower number,
+\item x -- x coordinate of the tower,
+\item y -- y coordinate of the tower.
+\end{itemize}
+
+Returns information saved in xml format.
+
+Przykład dodania wieży o numerze 3 w miejsce o współrzędnych $x=1$, $y = 4$: 
+\begin{lstlisting}[style=Matlab-editor]
+%Adres serwera
+IPAddressSend = '127.0.0.1';
+%Port na ktorym nasluchuje serwer
+portSend = 55001;
+%Utworzenie danych w formacie xml zawierajacych informacje o numerze wiezy i jej wspolrzednych
+txt = AddTower(3,1,4);
+%Wyslanie polecenia (Command) utworzenia wiezy (AddTower)
+errorAddTower = SendData(IPAddressSend,portSend,txt,'Command','name="AddTower"');
+\end{lstlisting}
+
+\paragraph{GenerateTabular} \hspace{0pt} \\
+Generation of a tabular table.
+\begin{lstlisting}[style=Matlab-editor]
+GenerateTabular(fileName,data,columnDescriptions,rowDescriptions,rowsBold,decimalPlaces)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item fileName -- name of the file to which the array will be saved,
+\item data -- saved array,
+\item columnDescriptions -- column descriptions,
+\item rowDescriptions -- row descriptions, empty array([]) means no descriptions,
+\item rowsBold -- 0 means line descriptions are bold and 1 means bold,
+\item decimalPlaces -- number of decimal places.
+\end{itemize}
+
+Przykład generowania tablicy: 
+\begin{lstlisting}[style=Matlab-editor]
+%Tablica
+exampleArray = [1 2;
+                  3 1;
+                  5 2;
+                  2 4];
+%Opisy kolumn
+columnDescriptions={'No','Data 1','Data 2'};
+%Opisy wierszy
+rowDescriptions={'1','2','3','4'};
+%Utworzenie pliku zawierajacego srodowisko tablular
+GenerateTabular('array.tex',exampleArray,columnDescriptions,rowDescriptions,0,0);
+\end{lstlisting}
+
+Zawartość pliku array.tex:
+\lstinputlisting[style=lstStyleLaTeX]{table/array.tex}
+
+Tablicę można dołączyć do pliku Latex-a: 
+\begin{lstlisting}[style=lstStyleLaTeX]
+\begin{table}
+\input{array}
+\caption{Wygenerowana tablica}
+\end{table}
+\end{lstlisting}
+
+Uzyskany efekt przedstawia tablica~\ref{array}.
+
+\begin{table}
+\input{table/array}
+\caption{Wygenerowana tablica}
+\label{array}
+\end{table}
+
+\paragraph{GenerateTikzData} \hspace{0pt} \\
+Generating data files for tikz charts.
+\begin{lstlisting}[style=Matlab-editor]
+GenerateTikzData(fileName,data,columnDescriptions)
+\end{lstlisting}
+
+Description:
+\begin{itemize}
+\item fileName -- name of the file to which the array will be saved,
+\item data -- saved array,
+\item columnDescriptions -- column descriptions.
+\end{itemize}
+
+Przykład generowania danych: 
+\begin{lstlisting}[style=Matlab-editor]
+%Tablica
+exampleArray = [1 2;
+                  3 1;
+                  5 2;
+                  2 4];
+%Opisy kolumn
+columnDescriptions={'No','D1','D2'};
+%Utworzenie pliku zawierajacego dane dla wykresow tikz
+GenerateTikzData('array.dat',[[1:size(exampleArray,1)]' exampleArray],columnDescriptions);
+\end{lstlisting}
+
+Zawartość pliku array.dat:
+\lstinputlisting{fig/array.dat}
+
+Plik array.dat można dołączyć do wykresu tikz-a: 
+\lstinputlisting[style=lstStyleLaTeX]{fig/array.tikz}
+
+Uzyskany efekt przedstawia rysunek~\ref{Fig:array}.
+
+\begin{figure}
+\input{fig/array.tikz}
+\caption{Wykres na podstawie danych wygenerowanych przez funkcję GenerateTikzData}
+\label{Fig:array}
+\end{figure}

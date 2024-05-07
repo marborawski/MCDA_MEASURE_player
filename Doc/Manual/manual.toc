@@ -1,0 +1,16 @@
+\babel@toc {polish}{}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {section}{\numberline {2}Game}{1}{section.2}%
+\contentsline {section}{\numberline {3}Biblioteka}{19}{section.3}%
+\contentsline {paragraph}{SendData}{19}{section.3}%
+\contentsline {paragraph}{NumberToName}{20}{lstnumber.-11.1}%
+\contentsline {paragraph}{ChangeBeginEnd}{20}{lstnumber.-12.1}%
+\contentsline {paragraph}{TilemapToXML}{20}{lstnumber.-13.1}%
+\contentsline {paragraph}{ParseXML}{21}{lstnumber.-15.33}%
+\contentsline {paragraph}{GetVectorFromCell}{22}{lstnumber.-19.3}%
+\contentsline {paragraph}{SetEnemies}{23}{lstnumber.-22.7}%
+\contentsline {paragraph}{SetTowers}{24}{lstnumber.-24.8}%
+\contentsline {paragraph}{StartEnemy}{25}{lstnumber.-26.8}%
+\contentsline {paragraph}{AddTower}{25}{lstnumber.-28.8}%
+\contentsline {paragraph}{GenerateTabular}{26}{lstnumber.-30.8}%
+\contentsline {paragraph}{GenerateTikzData}{27}{table.1}%

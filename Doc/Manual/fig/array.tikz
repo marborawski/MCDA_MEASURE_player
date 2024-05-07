@@ -1,0 +1,27 @@
+\begin{tikzpicture}
+\begin{axis}[
+    title={Example},
+    xlabel={No},
+    ylabel={Data},
+    legend pos=outer north east,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+\addplot[
+    color=blue,
+    mark=square
+    ]
+    table[x=No,y=D1]
+    {fig/array.dat};
+\addplot[
+    color=red,
+    mark=square
+    ]
+    table[x=No,y=D2]
+    {fig/array.dat};
+
+    \legend{Data 1, Data 2}
+
+\end{axis}
+\end{tikzpicture}

@@ -1,8 +1,8 @@
 function res = GetVectorFromCell(data, field)
 %Reading a data vector from a selected field of the structure array
 %
-% data - structure array
-% data - read structure fields
+% data  - structure array
+% field - read structure fields
 % returns a data vector
 
   res = [];

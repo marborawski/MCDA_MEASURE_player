@@ -1,5 +1,5 @@
 function GenerateTabular(fileName,data,columnDescriptions,rowDescriptions,rowsBold,decimalPlaces)
-%Automatic generation of a tabular table
+%Generation of a tabular table
 %
 % fileName           - name of the file to which the array will be saved
 % data               - saved array
