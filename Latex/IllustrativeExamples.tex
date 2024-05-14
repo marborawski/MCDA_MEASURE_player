@@ -9,10 +9,28 @@ functions of your software/code.}
 \begin{table}[!h]
 \input{Table/Score}
 \caption{Test}
-\label{test}
+\label{testTable}
 \end{table}
 
 \begin{figure}[!h]
 \input{Fig/Score.tikz}
 \caption{Test}
+\label{testFig}
 \end{figure}
+
+Odnośnik do rysunku~\ref{testPng}.
+
+\begin{figure}[!h]
+\includegraphics[width=6cm]{test.png}
+\caption{Dołączanie rysunków png}
+\label{testPng}
+\end{figure}
+
+\begin{figure}[!h]
+\includegraphics[width=9cm]{test.eps}
+\caption{Dołączanie rysunków eps, przy eksporcie trzeba dać 'Zaznaczenie'}
+\label{testEPS}
+\end{figure}
+
+Cytowanie literatury~\cite{council_of_the_eu_annex_2022}. Cytowanie wielu pozycji~\cite{polish_alternative_fuels_association_polish_nodate,buchanan_objectivity_1998}. Aby bibliografia się zaktualizowała należy skompilować latex-a (xelatex-a lub co tam aktualnie używasz), potem skompilować bibtex-a, a potem jeszcze dwa razy latex-a.
+

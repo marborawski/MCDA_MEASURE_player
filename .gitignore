@@ -15,3 +15,6 @@ Doc/Manual/manual.out
 Doc/Manual/manual.spl
 Doc/Manual/manual.synctex.gz
 Doc/Manual/Introduction.log
+Latex/article.bbl
+Latex/article.blg
+Latex/Fig/test-eps-converted-to.pdf
