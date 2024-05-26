@@ -75,7 +75,7 @@ for i=1:NoOfRounds
     if exist('OCTAVE_VERSION', 'builtin') ~= 0;
       TowerNumsCashCost=round(data.Answer.LevelPath{1}.Towers{1}.cash/data.Answer.LevelPath{1}.Tower{1}.cost);
     else
-      TowerNumsCashCost=round(data.LevelPath{1}.Towers{1}.cash/data.LevelPath{1}.Tower{1}.cost,TieBreaker="minusinf"); 
+      TowerNumsCashCost=round(data.Answer.LevelPath{1}.Towers{1}.cash/data.Answer.LevelPath{1}.Tower{1}.cost,TieBreaker="minusinf"); 
     end
     TowerNumsCashCost=ones(NoOfAlternatives,1)*TowerNumsCashCost;
     E=[E min([sumTowerPlace TowerNumsCashCost],[],2)];
@@ -85,7 +85,14 @@ for i=1:NoOfRounds
     for j=1:NoOfAlternatives
         EndBeginRatio=[EndBeginRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'enemies')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.Begin{1}.Enemy,'enemies')]];
         EndStartHealthRatio=[EndStartHealthRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'endMeanHealth')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Enemy,'startHealth')]];
+        if isnan(EndBeginRatio(j,1))
+            EndBeginRatio(j,1)=1;
+        end
+        if EndStartHealthRatio(j,1)==0
+            EndStartHealthRatio(j,1)=1;
+        end
     end
+    
     E=[E EndBeginRatio EndStartHealthRatio];%C5-C6 C7-C8
     E(isnan(E))=0;
 
@@ -107,17 +114,18 @@ for i=1:NoOfRounds
     W=[1 8 10 2 9 0 8 0];
     %vector of criteria preference directions: 1-max, 2-min
     PrefDirection=[2 2 2 2 1 1 1 1];
-    [E,W,PrefDirection] = RemoveCriteria(E,W,PrefDirection);
-%    [Score]=PROMETHEE(E,W,PrefDirection);
-    [Score]=TOPSIS(E,W,PrefDirection,2);%Im wyższa wartość tym lepiej
+    %[E,W,PrefDirection] = RemoveCriteria(E,W,PrefDirection);
+    [Score]=PROMETHEE(E,W,PrefDirection);
+%    [Score]=TOPSIS(E,W,PrefDirection,2);%Im wyższa wartość tym lepiej
 %    [Score]=VIKOR(E,W,PrefDirection,0.5);%Im wyższa wartość tym lepiej
 %    [Score]=VMCM(E,W,PrefDirection);%Im wyższa wartość tym lepiej
 %     [Score]=AHP(E,W,PrefDirection,10);%Im wyższa wartość tym lepiej
-    [~,rank]=sort(Score,'descend');
+    [~,rank]=sort(Score,'descend');%numer oznacza ścieżkę
+    ranking=GenerateRanking(Score);%numer oznacza pozycję w rankingu
     i
     E
     Score
-    rank
+    ranking'
      
     %launching the enemy
     trackNumber=rank(1)-1;
@@ -125,7 +133,7 @@ for i=1:NoOfRounds
     errorStartEnemy = SendData(IPAddressSend,portSend,txt,'Command','name="StartEnemy"');
     
     scoreArray = [scoreArray;Score];
-%    pause;
+    pause;
     i=i+1;
 end
 

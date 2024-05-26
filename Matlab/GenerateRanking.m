@@ -1,4 +1,4 @@
-function ranking=genRanking(v)
+function ranking=GenerateRanking(v)
 	%if vector of alternative performances is not empty
 	if ~isnan(v)
 		%check vector length
