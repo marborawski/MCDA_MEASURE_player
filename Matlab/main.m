@@ -79,21 +79,21 @@ for i=1:NoOfRounds
     end
     TowerNumsCashCost=ones(NoOfAlternatives,1)*TowerNumsCashCost;
     E=[E min([sumTowerPlace TowerNumsCashCost],[],2)];
-    %Criteria 5-8
-    EndBeginRatio=[];%jeżeli nie ma przejścia to wstaw 1
+    %Criteria 5-6
+    EndBeginRatio=[];
     EndStartHealthRatio=[];
     for j=1:NoOfAlternatives
         EndBeginRatio=[EndBeginRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'enemies')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.Begin{1}.Enemy,'enemies')]];
         EndStartHealthRatio=[EndStartHealthRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'endMeanHealth')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Enemy,'startHealth')]];
-        if isnan(EndBeginRatio(j,1))
+        if isnan(EndBeginRatio(j,1))%jeżeli nie ma przejścia to wstaw 1
             EndBeginRatio(j,1)=1;
         end
-        if EndStartHealthRatio(j,1)==0
+        if EndStartHealthRatio(j,1)==0%jeżeli nie ma przejścia to wstaw 1
             EndStartHealthRatio(j,1)=1;
         end
     end
     
-    E=[E EndBeginRatio EndStartHealthRatio];%C5-C6 C7-C8
+    E=[E EndBeginRatio(:,1) EndStartHealthRatio(:,1)];%C5 C6
     E(isnan(E))=0;
 
     %Criteria Preference direction (1-max;2-min):
@@ -103,23 +103,20 @@ for i=1:NoOfRounds
     %C4 - min([sumTowerPlace TowerNumsCashCost]) - min - ile wiez mozna
     %postawic (wolne pola i kasa)
     %C5 - EndBeginRatio for Bottle Enemy - max - ile butelek dotarło do konca
-    %C6 - EndBeginRatio for Paper Enemy - max - ile papierow dotarło do konca 
-    %C7 - EndStartHealthRatio for Bottle - max - ile % zycia zostalo srednio
+    %C6 - EndStartHealthRatio for Bottle - max - ile % zycia zostalo srednio
     %butelkom
-    %C8 - EndStartHealthRatio for Paper - max - ile % zycia zostalo srednio
-    %papierom
-	
+
 	%MCDA method calling
     %vector of criteria weights
-    W=[1 8 10 2 9 0 8 0];
+    W=[1 8 10 2 9 8];
     %vector of criteria preference directions: 1-max, 2-min
-    PrefDirection=[2 2 2 2 1 1 1 1];
+    PrefDirection=[2 2 2 2 1 1];
     %[E,W,PrefDirection] = RemoveCriteria(E,W,PrefDirection);
     [Score]=PROMETHEE(E,W,PrefDirection);
 %    [Score]=TOPSIS(E,W,PrefDirection,2);%Im wyższa wartość tym lepiej
 %    [Score]=VIKOR(E,W,PrefDirection,0.5);%Im wyższa wartość tym lepiej
 %    [Score]=VMCM(E,W,PrefDirection);%Im wyższa wartość tym lepiej
-%     [Score]=AHP(E,W,PrefDirection,10);%Im wyższa wartość tym lepiej
+%    [Score]=AHP(E,W,PrefDirection,10);%Im wyższa wartość tym lepiej
     [~,rank]=sort(Score,'descend');%numer oznacza ścieżkę
     ranking=GenerateRanking(Score);%numer oznacza pozycję w rankingu
     i
