@@ -107,7 +107,7 @@ for i=1:NoOfRounds
     W=[1 8 10 2 9 0 8 0];
     %vector of criteria preference directions: 1-max, 2-min
     PrefDirection=[2 2 2 2 1 1 1 1];
-    [E,W,PrefDirection] = RemoveCriteria(E,W,PrefDirection);
+    [E,W,PrefDirection,ind] = RemoveCriteria(E,W,PrefDirection);
 %    [Score]=PROMETHEE(E,W,PrefDirection);
     [Score]=TOPSIS(E,W,PrefDirection,2);%Im wyższa wartość tym lepiej
 %    [Score]=VIKOR(E,W,PrefDirection,0.5);%Im wyższa wartość tym lepiej
@@ -118,6 +118,7 @@ for i=1:NoOfRounds
     E
     Score
     rank
+    ind
      
     %launching the enemy
     trackNumber=rank(1)-1;
