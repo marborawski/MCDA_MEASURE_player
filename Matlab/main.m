@@ -9,7 +9,6 @@ portSend = 55001;
 SendData(IPAddressSend,portSend,'','Command','name="Restart"');
 pause(1);
 
-%x=cols=16 y=rows=13 -tilemap is rotated 90 degree-left
 tilemap = [1	3	1	3	1	1	1	1	1	1	1	3	1	1	1 1;
            1	2	1	2	1	1	1	1	1	1	1	2	1	1	1 1;
            1	2	1	2	1	1	1	1	3	1	2	2	1	1	1 1;
@@ -47,13 +46,14 @@ dataTower = fileread('towers.xml');
 dataTower = ParseXML(dataTower);
 
 scoreArray = [];
+
 %Start rounds
-NoOfRounds=length(dataTower.Answer.TowerCoordinates{1}.Element);
-for i=1:NoOfRounds
-    %Placing tower on the board
-    x=dataTower.Answer.TowerCoordinates{1}.Element{i}.x;
-    y=dataTower.Answer.TowerCoordinates{1}.Element{i}.y;
-    no=dataTower.Answer.TowerCoordinates{1}.Element{i}.no;
+noOfRounds=length(dataTower.Answer.TowerCoordinates{1}.Element);
+for roundNo=1:noOfRounds
+    %Placing tower on the tilemap
+    x=dataTower.Answer.TowerCoordinates{1}.Element{roundNo}.x;
+    y=dataTower.Answer.TowerCoordinates{1}.Element{roundNo}.y;
+    no=dataTower.Answer.TowerCoordinates{1}.Element{roundNo}.no;
     txt = AddTower(0,x,y);
     errorAddTower = SendData(IPAddressSend,portSend,txt,'Command','name="AddTower"');
     choiceOfPathData = SendData(IPAddressSend,portSend,[],'Command','name="GetChoiceOfPathData"');    
@@ -64,13 +64,17 @@ for i=1:NoOfRounds
 
     %Preparation of decision matrix based on the read statistics
     NoOfAlternatives=length(data.Answer.LevelPath{1}.Path);
-    %Criterion 1
+    
+    %Criterion 1 - cost - Path length (number of tiles)
     E=[GetVectorFromCell(data.Answer.LevelPath{1}.Path,'cost')]';
-    %Criterion 2
+    
+    %Criterion 2 - shotAtTiles - Number of fired tiles on the path
     E=[E [GetVectorFromCell(data.Answer.LevelPath{1}.Path,'shotAtTiles')]'];
-    %Criterion 3
+    
+    %Criterion 3 - towers - Number of towers on the path
     E=[E [GetVectorFromCell(data.Answer.LevelPath{1}.Path,'towers')]'];
-    %Criterion 4
+    
+    %Criterion 4 - min([sumTowerPlace TowerNumsCashCost]) - How many towers can be placed (free tiles and money)
     sumTowerPlace=[GetVectorFromCell(data.Answer.LevelPath{1}.Path,'sumTowerPlace')]';
     if exist('OCTAVE_VERSION', 'builtin') ~= 0;
       TowerNumsCashCost=round(data.Answer.LevelPath{1}.Towers{1}.cash/data.Answer.LevelPath{1}.Tower{1}.cost);
@@ -78,74 +82,83 @@ for i=1:NoOfRounds
       TowerNumsCashCost=round(data.Answer.LevelPath{1}.Towers{1}.cash/data.Answer.LevelPath{1}.Tower{1}.cost,TieBreaker="minusinf"); 
     end
     TowerNumsCashCost=ones(NoOfAlternatives,1)*TowerNumsCashCost;
-    E=[E min([sumTowerPlace TowerNumsCashCost],[],2)];
-    %Criteria 5-6
+    E=[E min([sumTowerPlace TowerNumsCashCost],[],2)];%C4
+    
+    %Criterion 5 - EndBeginRatio for Enemy - How many enemies reached the end of path
+    %Criterion 6 - EndStartHealthRatio for Enemy - How many % of life the opponents have left on average after reaching the end
     EndBeginRatio=[];
     EndStartHealthRatio=[];
     for j=1:NoOfAlternatives
         EndBeginRatio=[EndBeginRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'enemies')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.Begin{1}.Enemy,'enemies')]];
         EndStartHealthRatio=[EndStartHealthRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'endMeanHealth')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Enemy,'startHealth')]];
-        if isnan(EndBeginRatio(j,1))%jeżeli nie ma przejścia to wstaw 1
-            EndBeginRatio(j,1)=1;
-        end
-        if EndStartHealthRatio(j,1)==0%jeżeli nie ma przejścia to wstaw 1
-            EndStartHealthRatio(j,1)=1;
-        end
+%         if isnan(EndBeginRatio(j,1)) %If the enemy hasn't taken this path yet, put 1
+%             EndBeginRatio(j,1)=1;
+%         end
+%         if EndStartHealthRatio(j,1)==0 %If the enemy hasn't taken this path yet, put 1
+%             EndStartHealthRatio(j,1)=1;
+%         end
     end
-    
     E=[E EndBeginRatio(:,1) EndStartHealthRatio(:,1)];%C5 C6
     E(isnan(E))=0;
 
-    %Criteria Preference direction (1-max;2-min):
-    %C1 - Cost - min - dlugosc sciezki
-    %C2 - shotAtTiles - min - liczba ostrzeliwanych pol
-    %C3 - towers - min - liczba wiez na sciezce
-    %C4 - min([sumTowerPlace TowerNumsCashCost]) - min - ile wiez mozna
-    %postawic (wolne pola i kasa)
-    %C5 - EndBeginRatio for Bottle Enemy - max - ile butelek dotarło do konca
-    %C6 - EndStartHealthRatio for Bottle - max - ile % zycia zostalo srednio
-    %butelkom
-
 	%MCDA method calling
-    %vector of criteria weights
+    %Vector of criteria weights
     W=[1 8 10 2 9 8];
-    %vector of criteria preference directions: 1-max, 2-min
+    %Vector of criteria preference directions: 1-max, 2-min
     PrefDirection=[2 2 2 2 1 1];
-    % [E,W,PrefDirection] = RemoveCriteria(E,W,PrefDirection);
-    [Score]=PROMETHEE(E,W,PrefDirection);
-%    [Score]=TOPSIS(E,W,PrefDirection,2);%Im wyższa wartość tym lepiej
-%    [Score]=VIKOR(E,W,PrefDirection,0.5);%Im wyższa wartość tym lepiej
-%    [Score]=VMCM(E,W,PrefDirection);%Im wyższa wartość tym lepiej
-%    [Score]=AHP(E,W,PrefDirection,10);%Im wyższa wartość tym lepiej
-    [~,rank]=sort(Score,'descend');%numer oznacza ścieżkę
-    ranking=GenerateRanking(Score);%numer oznacza pozycję w rankingu
-    i
+    E2=E;
+    [E,W,PrefDirection,ind] = RemoveCriteria(E,W,PrefDirection);
+    Score=PROMETHEE(E,W,PrefDirection);
+%    Score=TOPSIS(E,W,PrefDirection,2);
+%    Score=VIKOR(E,W,PrefDirection,0.5);
+%    Score=VMCM(E,W,PrefDirection);
+%    Score=AHP(E,W,PrefDirection,10);
+    [~,rank1]=sort(Score,'descend');%The number in rank1 indicates the path
+    rank2=GenerateRanking(Score)';%The number in the rank2 means the position in the ranking
+    roundNo
+    ind
     E
+    E2
     Score
-    ranking'
+    rank2
      
     %launching the enemy
-    trackNumber=rank(1)-1;
+    trackNumber=rank1(1)-1;
     txt = StartEnemy(trackNumber,trackNumber);
     errorStartEnemy = SendData(IPAddressSend,portSend,txt,'Command','name="StartEnemy"');
     
     scoreArray = [scoreArray;Score];
     pause;
-    i=i+1;
+    roundNo=roundNo+1;
 end
-
-columnDescriptions{1} = 'Nr.';
-for ii = 1:size(scoreArray,2)
-  columnDescriptions{ii + 1} = ['Path no ' num2str(ii)];
-end
-for ii = 1:size(scoreArray,1)
-  rowDescriptions{ii} = num2str(ii);
-end
-GenerateTabular('../Latex/Table/Score.tex',scoreArray,columnDescriptions,rowDescriptions,0,3)
 
 columnDescriptions{1} = 'Nr.';
 for ii = 1:size(scoreArray,2)
   columnDescriptions{ii + 1} = ['Path' num2str(ii)];
 end
-GenerateTikzData('../Latex/Fig/Score.dat',[[1:size(scoreArray,1)]' scoreArray],columnDescriptions)
+for ii = 1:size(scoreArray,2)
+  legendDescription{ii} = ['Path no ' num2str(ii)];
+end
+for ii = 1:size(scoreArray,1)
+  rowDescriptions{ii} = num2str(ii);
+end
+GenerateTabular('../Latex/Table/Score.tex',scoreArray,columnDescriptions,rowDescriptions,0,3)
+fig=figure;
+hold on;
+title('Score dependence on iteration');
+xlim([0.5 noOfRounds+0.5]);
+xticks([1:noOfRounds]);
+ylim([min(min(scoreArray))-0.1 max(max(scoreArray))+0.1]);
+grid on;
+xlabel('Iteration (Round)');
+ylabel('Score');
+leg=plot(scoreArray);
+legend([leg],legendDescription,'Location','eastoutside','Orientation','vertical');
+saveas(fig,'../Latex/Fig/scoreRounds.png','png');
 
+GenerateTikzData('../Latex/Fig/Score.dat',[[1:size(scoreArray,1)]' scoreArray],columnDescriptions)
+columnDescriptions
+[[1:size(scoreArray,1)]' scoreArray]
+fid=fopen('scoreRounds.txt','a');
+fprintf(fid,'%s',columnDescriptions);
+fprintf(fid,'%s',[[1:size(scoreArray,1)]' scoreArray]);
