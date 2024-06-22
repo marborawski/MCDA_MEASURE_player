@@ -19,6 +19,7 @@
 \unidirectionalAssociation{UnityServer}{}{}{ManagementCost}{}{}
 \unidirectionalAssociation{UnityServer}{}{}{ManagementCash}{}{}
 \unidirectionalAssociation{UnityServer}{}{}{EnemyInfo}{}{}
+\unidirectionalAssociation{UnityServer}{}{}{ManagementTilemap}{}{}
 \unidirectionalAssociation{UnityServer}{}{}{Towers}{}{}
 \unidirectionalAssociation{Towers}{}{}{CreateTilemap}{}{}
 \unidirectionalAssociation{Towers}{}{}{ManagementCash}{}{}
