@@ -132,24 +132,24 @@ for roundNo=1:noOfRounds
     roundNo=roundNo+1;
 end
 
-% %Latex reports
-% columnDescriptions{1} = 'Nr.';
-% for ii = 1:size(scoreArray,2)
-%   columnDescriptions{ii + 1} = ['Path no ' num2str(ii)];
-% end
-% for ii = 1:size(scoreArray,1)
-%   rowDescriptions{ii} = num2str(ii);
-% end
-% GenerateTabular('../Latex/Table/Score.tex',scoreArray,columnDescriptions,rowDescriptions,0,3)
-% 
-% columnDescriptions{1} = 'Nr.';
-% for ii = 1:size(scoreArray,2)
-%   columnDescriptions{ii + 1} = ['Path' num2str(ii)];
-% end
-% GenerateTikzData('../Latex/Fig/Score.dat',[[1:size(scoreArray,1)]' scoreArray],columnDescriptions)
-% 
-% columnDescriptions
-% [[1:size(scoreArray,1)]' scoreArray]
+%Latex reports
+columnDescriptions{1} = 'Nr.';
+for ii = 1:size(scoreArray,2)
+  columnDescriptions{ii + 1} = ['Path no ' num2str(ii)];
+end
+for ii = 1:size(scoreArray,1)
+  rowDescriptions{ii} = num2str(ii);
+end
+GenerateTabular('../Latex/Table/Score.tex',scoreArray,columnDescriptions,rowDescriptions,0,3)
+
+columnDescriptions{1} = 'Nr.';
+for ii = 1:size(scoreArray,2)
+  columnDescriptions{ii + 1} = ['Path' num2str(ii)];
+end
+GenerateTikzData('../Latex/Fig/Score.dat',[[1:size(scoreArray,1)]' scoreArray],columnDescriptions)
+
+columnDescriptions
+[[1:size(scoreArray,1)]' scoreArray]
 
 %File reports - plot
 for i = 1:size(scoreArray,2)
@@ -171,16 +171,15 @@ saveas(fig,'../Latex/Fig/scoreRounds.png','png');
 
 %File reports - table
 scoreArray=[[1:size(scoreArray,1)]' scoreArray];
-fid=fopen('../Latex/Table/scoreRounds.txt','w');
-fprintf(fid,'|No.\t\t|');
-for i = 1:size(scoreArray,2)-1  
-    fprintf(fid,'Path %i\t\t|',i);
+fid=fopen('scoreRounds.txt','w');
+fprintf(fid,'|No.     |');
+for i = 1:size(scoreArray,2)
+    fprintf(fid,'Path %i |',i);
 end
-fprintf(fid,'\n');
 for i = 1:size(scoreArray,1)
     for j = 1:size(scoreArray,2)
-        fprintf(fid,'|%f\t',scoreArray(i,j));
+        fprintf(fid,'|%f    ',i);
     end
-    fprintf(fid,'|\n');
+    fprintf(fid,'|\n',i);
 end
 fclose('all');
