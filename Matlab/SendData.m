@@ -27,9 +27,6 @@ function txt = SendData(IPAddressSend,portSend,data,name, args)
   set(tcpipClient,'Timeout',30);
   writeline(tcpipClient,txtOut);
   pause(0.1);
-    fid = fopen('tmpSend.xml','w');%MOJE
-    bytes = fprintf(fid,'%s',txtOut);
-    fclose(fid);
 
 %Getting a response from the server
   txt = read(tcpipClient,100,'uint8');
@@ -47,9 +44,4 @@ function txt = SendData(IPAddressSend,portSend,data,name, args)
     txt = replace(txt,'<?xml version="1.0" encoding="utf-16"?>','<?xml version="1.0"?>');
   end
   
-      fid = fopen('tmpSend2.xml','w');%MOJE
-    bytes = fprintf(fid,'%s',txt);
-    fclose(fid);
-
-
 end

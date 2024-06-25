@@ -76,14 +76,14 @@ for roundNo=1:noOfRounds
     
     %Criterion 4 - min([sumTowerPlace TowerNumsCashCost]) - How many towers can be placed (free tiles and money)
     sumTowerPlace=[GetVectorFromCell(data.Answer.LevelPath{1}.Path,'sumTowerPlace')]';
+    numberOfTowers=[GetVectorFromCell(data.Answer.LevelPath{1}.Path,'towers')]';
     if exist('OCTAVE_VERSION', 'builtin') ~= 0;
       TowerNumsCashCost=round(data.Answer.LevelPath{1}.Towers{1}.cash/data.Answer.LevelPath{1}.Tower{1}.cost);
     else
       TowerNumsCashCost=round(data.Answer.LevelPath{1}.Towers{1}.cash/data.Answer.LevelPath{1}.Tower{1}.cost,TieBreaker="minusinf"); 
     end
     TowerNumsCashCost=ones(NoOfAlternatives,1)*TowerNumsCashCost;
-    E=[E min([sumTowerPlace TowerNumsCashCost],[],2)];%C4
-    
+    E=[E min([sumTowerPlace-numberOfTowers TowerNumsCashCost],[],2)];%C4
     %Criterion 5 - EndBeginRatio for Enemy - How many enemies reached the end of path
     %Criterion 6 - EndStartHealthRatio for Enemy - How many % of life the opponents have left on average after reaching the end
     EndBeginRatio=[];
@@ -91,34 +91,40 @@ for roundNo=1:noOfRounds
     for j=1:NoOfAlternatives
         EndBeginRatio=[EndBeginRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'enemies')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.Begin{1}.Enemy,'enemies')]];
         EndStartHealthRatio=[EndStartHealthRatio;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'endMeanHealth')]./[GetVectorFromCell(data.Answer.LevelPath{1}.Enemy,'startHealth')]];
-        if isnan(EndBeginRatio(j,1)) %If the enemy hasn't taken this path yet, put 1
-            EndBeginRatio(j,1)=1;
+        if isnan(EndBeginRatio(j,2)) %If the enemy hasn't taken this path yet, put 1
+            EndBeginRatio(j,2)=1;
         end
-        if EndStartHealthRatio(j,1)==0 %If the enemy hasn't taken this path yet, put 1
-            EndStartHealthRatio(j,1)=1;
+        if EndStartHealthRatio(j,2)==0 %If the enemy hasn't taken this path yet, put 1
+            EndStartHealthRatio(j,2)=1;
         end
     end
-    E=[E EndBeginRatio(:,1) EndStartHealthRatio(:,1)];%C5 C6
+
+    E=[E EndBeginRatio(:,2) EndStartHealthRatio(:,2)];%C5 C6
     E(isnan(E))=0;
 
 	%MCDA method calling
     %Vector of criteria weights
-    W=[1 8 10 2 9 8];
+    W=[3 10 10 1 9 8];
     %Vector of criteria preference directions: 1-max, 2-min
     PrefDirection=[2 2 2 2 1 1];
-    E2=E;
     [E,W,PrefDirection,ind] = RemoveCriteria(E,W,PrefDirection);
-    Score=PROMETHEE(E,W,PrefDirection);
-%    Score=TOPSIS(E,W,PrefDirection,2);
-%    Score=VIKOR(E,W,PrefDirection,0.5);
-%    Score=VMCM(E,W,PrefDirection);
-%    Score=AHP(E,W,PrefDirection,10);
+    fh=@PROMETHEE;
+%     fh=@TOPSIS;
+%     fh=@VIKOR;
+%     fh=@VMCM;
+%     fh=@AHP;
+    Score=fh(E,W,PrefDirection);
+%    Score=fh(E,W,PrefDirection);%call function for PROMETHEE method
+%    Score=fh(E,W,PrefDirection,2);%call function for TOPSIS method
+%    Score=fh(E,W,PrefDirection,0.5);%call function for VIKOR method
+%    Score=(E,W,PrefDirection);%call function for VMCM method
+%    Score=(E,W,PrefDirection,10);%call function for AHP method
+    funName=func2str(fh);
     [~,rank1]=sort(Score,'descend');%The number in rank1 indicates the path
     rank2=GenerateRanking(Score)';%The number in the rank2 means the position in the ranking
     roundNo
     ind
     E
-    E2
     Score
     rank2
      
@@ -132,55 +138,29 @@ for roundNo=1:noOfRounds
     roundNo=roundNo+1;
 end
 
-% %Latex reports
-% columnDescriptions{1} = 'Nr.';
-% for ii = 1:size(scoreArray,2)
-%   columnDescriptions{ii + 1} = ['Path no ' num2str(ii)];
-% end
-% for ii = 1:size(scoreArray,1)
-%   rowDescriptions{ii} = num2str(ii);
-% end
-% GenerateTabular('../Latex/Table/Score.tex',scoreArray,columnDescriptions,rowDescriptions,0,3)
-% 
-% columnDescriptions{1} = 'Nr.';
-% for ii = 1:size(scoreArray,2)
-%   columnDescriptions{ii + 1} = ['Path' num2str(ii)];
-% end
-% GenerateTikzData('../Latex/Fig/Score.dat',[[1:size(scoreArray,1)]' scoreArray],columnDescriptions)
-% 
-% columnDescriptions
-% [[1:size(scoreArray,1)]' scoreArray]
-
-%File reports - plot
-for i = 1:size(scoreArray,2)
-  legendDescription{i} = ['Path no ' num2str(i)];
-end
-fig=figure;
-hold on;
-title('Score dependence on iteration');
-xlim([0.5 noOfRounds+0.5]);
-xticks([1:noOfRounds]);
-ylim([min(min(scoreArray))-0.1 max(max(scoreArray))+0.1]);
-yticks([round(min(min(scoreArray)),1):0.1:round(max(max(scoreArray)),1)]);
-grid on;
-xlabel('Iteration (Round)');
-ylabel('Score');
-leg=plot(scoreArray);
-legend([leg],legendDescription,'Location','eastoutside','Orientation','vertical');
-saveas(fig,'../Latex/Fig/scoreRounds.png','png');
-
-%File reports - table
-scoreArray=[[1:size(scoreArray,1)]' scoreArray];
-fid=fopen('../Latex/Table/scoreRounds.txt','w');
-fprintf(fid,'|No.\t\t|');
-for i = 1:size(scoreArray,2)-1  
-    fprintf(fid,'Path %i\t\t|',i);
-end
-fprintf(fid,'\n');
-for i = 1:size(scoreArray,1)
-    for j = 1:size(scoreArray,2)
-        fprintf(fid,'|%f\t',scoreArray(i,j));
+%Reading and calculating the game result for the MCDA method
+levelData = SendData(IPAddressSend,portSend,[],'Command','name="LevelData"');
+data = ParseXML(levelData);
+EndEnemies=[];
+BeginEnemies=[];
+EndHealth=[];
+for j=1:NoOfAlternatives
+    EndEnemies=[EndEnemies;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'enemies')]];
+    BeginEnemies=[BeginEnemies;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.Begin{1}.Enemy,'enemies')]];
+    EndHealth=[EndHealth;[GetVectorFromCell(data.Answer.LevelPath{1}.Path{j}.End{1}.Enemy,'endMeanHealth')]];
+    if isnan(EndEnemies(j,2)) %If the enemy hasn't taken this path, put 0
+        EndEnemies(j,2)=0;
     end
-    fprintf(fid,'|\n');
+    if isnan(BeginEnemies(j,2)) %If the enemy hasn't taken this path, put 0
+        BeginEnemies(j,2)=0;
+    end
+    if BeginEnemies(j,2)==0 %If the enemy hasn't taken this path, put 1
+        EndHealth(j,2)=1;
+    end
 end
-fclose('all');
+StartHealth=GetVectorFromCell(data.Answer.LevelPath{1}.Enemy,'startHealth');
+
+EnemiesToEnd=sum(EndEnemies(:,2))
+EnemiesMeanHealthRatio=mean(EndHealth(:,2))/StartHealth
+
+GenerateReport('../Latex/Fig/scoreRounds.png','../Latex/Table/scoreRounds.html',scoreArray,funName,EnemiesToEnd,EnemiesMeanHealthRatio);
