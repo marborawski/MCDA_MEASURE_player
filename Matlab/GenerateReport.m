@@ -1,4 +1,4 @@
-function GenerateReport(fileNamePlot,fileNameTab,scoreArray,funName,EnemiesToEnd,EnemiesMeanHealthRatio);
+function GenerateReport(fileNamePlot,fileNameTab,scoreArray,funName,EnemiesToEnd,EnemiesMeanHealthRatio,TracksCost);
 %Generation of a tabular table
 %
 % fileNamePlot              - name of the file to which the plot will be saved
@@ -20,7 +20,7 @@ title(funName,' - Score dependence on iteration');
 xlim([0.5 noOfRounds+0.5]);
 xticks([1:noOfRounds]);
 ylim([min(min(scoreArray))-0.1 max(max(scoreArray))+0.1]);
-yticks([round(min(min(scoreArray)),1):0.1:round(max(max(scoreArray)),1)]);
+yticks([round(min(min(scoreArray)),1):(round(max(max(scoreArray)),1)-round(min(min(scoreArray)),1))/10:round(max(max(scoreArray)),1)]);
 grid on;
 xlabel('Iteration (Round)');
 ylabel('Score');
@@ -32,7 +32,7 @@ saveas(fig,fileNamePlot,'png');
 scoreArray=[[1:size(scoreArray,1)]' scoreArray];
 fid=fopen(fileNameTab,'w'); 
 fprintf(fid,'<html>\n<body>\n');
-fprintf(fid,'<p>MCDAMethod: %s</p>\n<p>Enemies to end: %i</p>\n<p>Enemies mean health: %f</p>\n<table>\n',funName,EnemiesToEnd,EnemiesMeanHealthRatio);
+fprintf(fid,'<p>MCDA Method: %s</p>\n<p>Enemies to end: %i</p>\n<p>Enemies mean health: %f</p>\n<p>Tracks cost: %i</p>\n<table>\n',funName,EnemiesToEnd,EnemiesMeanHealthRatio,TracksCost);
 fprintf(fid,'<tr>\n<th>No.</th>');
 for i = 1:size(scoreArray,2)-1  
     fprintf(fid,'<th>Path %i</th>',i);

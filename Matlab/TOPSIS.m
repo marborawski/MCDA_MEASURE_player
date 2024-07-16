@@ -38,7 +38,7 @@ function [S]=TOPSIS(E,W,PrefDirection,p)
           if E(ii,jj) < vMinus(jj)
             vMinus(jj) = E(ii,jj);
           end
-          else
+        else
           if E(ii,jj) < vPlus(jj)
             vPlus(jj) = E(ii,jj);
           end

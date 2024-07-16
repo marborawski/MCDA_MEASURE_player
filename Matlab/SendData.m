@@ -7,13 +7,13 @@ function txt = SendData(IPAddressSend,portSend,data,name, args)
 % name          - control information sent to the server
 % args          - arguments related to control information
 % returns the response from the server in xml format
-  
+
 %Preparing data for sending (xml format)
   txtOut = sprintf('<?xml version="1.0" encoding="utf-8"?>');
   txtOut = [txtOut sprintf('<Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">')];
   if isempty(args)
     txtOut = [txtOut sprintf('<%s>',name)];
-  else  
+  else
     txtOut = [txtOut sprintf('<%s %s>',name, args)];
   end
   if ~isempty(data)
@@ -21,8 +21,8 @@ function txt = SendData(IPAddressSend,portSend,data,name, args)
   end
   txtOut = [txtOut sprintf('</%s>',name)];
   txtOut = [txtOut sprintf('</Data>\n')];
-  
-%Sending data to the server  
+
+%Sending data to the server
   tcpipClient = tcpclient(IPAddressSend,portSend);
   set(tcpipClient,'Timeout',30);
   writeline(tcpipClient,txtOut);
@@ -34,7 +34,7 @@ function txt = SendData(IPAddressSend,portSend,data,name, args)
     txt = [txt read(tcpipClient,100,'uint8')];
   end
   if tcpipClient.NumBytesAvailable > 0
-    txt = [txt read(tcpipClient,tcpipClient.NumBytesAvailable,'uint8')];    
+    txt = [txt read(tcpipClient,tcpipClient.NumBytesAvailable,'uint8')];
   end
   clear tcpipClient;
   txt = char(txt);
@@ -43,5 +43,5 @@ function txt = SendData(IPAddressSend,portSend,data,name, args)
   else
     txt = replace(txt,'<?xml version="1.0" encoding="utf-16"?>','<?xml version="1.0"?>');
   end
-  
+
 end

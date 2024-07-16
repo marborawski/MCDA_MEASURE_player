@@ -1,18 +1,20 @@
 <?xml version="1.0"?>
 <Answer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="LevelData">
 	<TowerCoordinates>
-		<Element x="2" y="8" no="0" />
-		<Element x="8" y="4" no="2" />
-		<Element x="11" y="8" no="3" />
-		<Element x="3" y="6" no="1" />
-		<Element x="0" y="5" no="4" />
-		<Element x="4" y="2" no="5" />
-		<Element x="7" y="2" no="6" />
-		<Element x="11" y="4" no="7" />
-		<Element x="7" y="7" no="8" />
-		<Element x="2" y="2" no="9" />
-		<Element x="13" y="4" no="10" />
-        <Element x="0" y="10" no="11" />
-        <Element x="9" y="7" no="12" />
+		<Element x="0" y="6" />
+		<Element x="7" y="8" />
+		<Element x="3" y="6" />
+		<Element x="10" y="6" />
+		<Element x="0" y="2" />
+		<Element x="4" y="9" />
+		<Element x="8" y="4" />
+		<Element x="14" y="3" />
+		<Element x="0" y="12" />		
+		<Element x="7" y="1" />
+		<Element x="11" y="9" />
+		<Element x="0" y="0" />
+		<Element x="-1" y="-1" />
+        <Element x="-1" y="-1" />
 	</TowerCoordinates>
 </Answer>
+

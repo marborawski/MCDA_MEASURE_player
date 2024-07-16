@@ -9,19 +9,19 @@ portSend = 55001;
 SendData(IPAddressSend,portSend,'','Command','name="Restart"');
 pause(1);
 
-tilemap = [1	3	1	3	1	1	1	1	1	1	1	3	1	1	1 1;
-           1	2	1	2	1	1	1	1	1	1	1	2	1	1	1 1;
-           1	2	1	2	1	1	1	1	3	1	2	2	1	1	1 1;
-           1	2	1	2	1	1	1	1	2	1	2	1	1	1	1 1;
-           1	2	1	2	1	1	1	1	2	1	2	1	1	1	1 1;
-           1	2	1	2	2	1	1	1	2	1	2	2	1	1	1 1;
-           1	2	1	1	2	1	1	2	2	1	1	2	1	1	1 1;
-           1	2	1	2	2	1	1	2	1	1	2	2	1	1	1 1;
-           1	2	1	2	1	1	1	2	1	1	2	1	1	1	1 1;
-           1	2	1	2	1	1	1	2	2	1	2	2	2	2	1 1;
-           1	2	1	2	1	1	1	1	2	1	1	1	1	2	2 1;
-           1	2	1	2	2	1	1	1	2	2	4	1	1	1	2 1;
-           1	4	1	1	4	1	1	1	1	1	1	1	1	1	4 1;];
+tilemap = [1 3 1 3 1 1 1 1 1 1 1 3 1 1 1 1;
+           1 2 1 2 1 1 1 1 1 1 1 2 1 1 1 1;
+           1 2 1 2 1 1 1 1 3 1 2 2 1 1 1 1;
+           1 2 1 2 1 1 1 1 2 1 2 1 1 1 1 1;
+           1 2 1 2 1 1 1 1 2 1 2 1 1 1 1 1;
+           1 2 1 2 2 1 1 1 2 1 2 2 1 1 1 1;
+           1 2 1 1 2 1 1 2 2 1 1 2 1 1 1 1;
+           1 2 1 2 2 1 1 2 1 1 2 2 1 1 1 1;
+           1 2 1 2 1 1 1 2 1 1 2 1 1 1 1 1;
+           1 2 1 2 1 1 1 2 2 1 2 2 2 2 1 1;
+           1 2 1 2 1 1 1 1 2 1 1 1 1 2 2 1;
+           1 2 1 2 2 1 1 1 2 2 4 1 1 1 2 1;
+           1 4 1 1 4 1 1 1 1 1 1 1 1 1 4 1;];
 names{1} = 'Ground';
 names{2} = 'Water';
 names{3} = 'Begin';
@@ -37,7 +37,7 @@ SendData(IPAddressSend,portSend,txt,'Tilemap',[]);
 txt = SetEnemies(-1,2,20,2,30,30,40,'Paper','Enemy');
 SendData(IPAddressSend,portSend,txt,'Command','name="SetEnemies"');
 
-txt = SetTowers(-10,1000,1,1000,5,10,'Tower','Enemy');
+txt = SetTowers(-10,1000,1,1000,5,7,'Tower','Enemy');
 SendData(IPAddressSend,portSend,txt,'Command','name="SetTowers"');
 
 
@@ -46,18 +46,21 @@ dataTower = fileread('towers.xml');
 dataTower = ParseXML(dataTower);
 
 scoreArray = [];
+tracksCost = 0;
 
 %Start rounds
 noOfRounds=length(dataTower.Answer.TowerCoordinates{1}.Element);
 for roundNo=1:noOfRounds
+        
     %Placing tower on the tilemap
     x=dataTower.Answer.TowerCoordinates{1}.Element{roundNo}.x;
     y=dataTower.Answer.TowerCoordinates{1}.Element{roundNo}.y;
-    no=dataTower.Answer.TowerCoordinates{1}.Element{roundNo}.no;
-    txt = AddTower(0,x,y);
-    errorAddTower = SendData(IPAddressSend,portSend,txt,'Command','name="AddTower"');
-    choiceOfPathData = SendData(IPAddressSend,portSend,[],'Command','name="GetChoiceOfPathData"');    
-    
+    if x>=0 && y>=0
+        txt = AddTower(0,x,y);
+        errorAddTower = SendData(IPAddressSend,portSend,txt,'Command','name="AddTower"');
+        choiceOfPathData = SendData(IPAddressSend,portSend,[],'Command','name="GetChoiceOfPathData"');    
+    end
+
     %Reading alternative statistics
     levelData = SendData(IPAddressSend,portSend,[],'Command','name="LevelData"');
     data = ParseXML(levelData);
@@ -84,7 +87,7 @@ for roundNo=1:noOfRounds
     end
     TowerNumsCashCost=ones(NoOfAlternatives,1)*TowerNumsCashCost;
     E=[E min([sumTowerPlace-numberOfTowers TowerNumsCashCost],[],2)];%C4
-    %Criterion 5 - EndBeginRatio for Enemy - How many enemies reached the end of path
+    %Criterion 5 - EndBeginRatio for Enemy - How many % enemies reached the end of path
     %Criterion 6 - EndStartHealthRatio for Enemy - How many % of life the opponents have left on average after reaching the end
     EndBeginRatio=[];
     EndStartHealthRatio=[];
@@ -104,21 +107,22 @@ for roundNo=1:noOfRounds
 
 	%MCDA method calling
     %Vector of criteria weights
-    W=[3 10 10 1 9 8];
+    W=[2 10 8 1 20 10];
     %Vector of criteria preference directions: 1-max, 2-min
     PrefDirection=[2 2 2 2 1 1];
     [E,W,PrefDirection,ind] = RemoveCriteria(E,W,PrefDirection);
-    fh=@PROMETHEE;
-%     fh=@TOPSIS;
-%     fh=@VIKOR;
-%     fh=@VMCM;
-%     fh=@AHP;
-    Score=fh(E,W,PrefDirection);
-%    Score=fh(E,W,PrefDirection);%call function for PROMETHEE method
-%    Score=fh(E,W,PrefDirection,2);%call function for TOPSIS method
-%    Score=fh(E,W,PrefDirection,0.5);%call function for VIKOR method
-%    Score=(E,W,PrefDirection);%call function for VMCM method
-%    Score=(E,W,PrefDirection,10);%call function for AHP method
+    %fh=@PROMETHEE;
+    %fh=@PROMETHEE_usual;
+    %fh=@PROMETHEE_q_p_thresholds;
+    %fh=@PROSA;
+     fh=@TOPSIS;
+     %fh=@VIKOR;
+     %fh=@VMCM;
+     %fh=@AHP;
+    %Score=fh(E,W,PrefDirection);%call function for PROMETHEE, PROSA, VMCM methods
+    Score=fh(E,W,PrefDirection,2);%call function for TOPSIS method
+    %Score=fh(E,W,PrefDirection,0.5);%call function for VIKOR method
+    %Score=fh(E,W,PrefDirection,10);%call function for AHP method
     funName=func2str(fh);
     [~,rank1]=sort(Score,'descend');%The number in rank1 indicates the path
     rank2=GenerateRanking(Score)';%The number in the rank2 means the position in the ranking
@@ -133,8 +137,13 @@ for roundNo=1:noOfRounds
     txt = StartEnemy(trackNumber,trackNumber);
     errorStartEnemy = SendData(IPAddressSend,portSend,txt,'Command','name="StartEnemy"');
     
+    %scores
     scoreArray = [scoreArray;Score];
-    pause;
+    cost=GetVectorFromCell(data.Answer.LevelPath{1}.Path,'cost');
+    tracksCost=tracksCost+cost(trackNumber+1);
+
+    pause(10);
+    %pause();
     roundNo=roundNo+1;
 end
 
@@ -162,5 +171,7 @@ StartHealth=GetVectorFromCell(data.Answer.LevelPath{1}.Enemy,'startHealth');
 
 EnemiesToEnd=sum(EndEnemies(:,2))
 EnemiesMeanHealthRatio=mean(EndHealth(:,2))/StartHealth
-
-GenerateReport('../Latex/Fig/scoreRounds.png','../Latex/Table/scoreRounds.html',scoreArray,funName,EnemiesToEnd,EnemiesMeanHealthRatio);
+tracksCost
+PngName=['../Latex/' funName 'scoreRounds.png'];
+HtmlName=['../Latex/' funName 'scoreRounds.html'];
+GenerateReport(PngName,HtmlName,scoreArray,funName,EnemiesToEnd,EnemiesMeanHealthRatio,tracksCost);
