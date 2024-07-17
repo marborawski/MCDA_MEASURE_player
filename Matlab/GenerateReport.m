@@ -1,12 +1,13 @@
 function GenerateReport(fileNamePlot,fileNameTab,scoreArray,funName,EnemiesToEnd,EnemiesMeanHealthRatio,TracksCost);
-%Generation of a tabular table
+%Generating a report with the results of the tested MCDA method
 %
 % fileNamePlot              - name of the file to which the plot will be saved
 % fileNameTab               - name of the file to which the table will be saved
 % scoreArray                - scores (assessments) ot paths
-% funMane                   - name of the MCDA method
+% funName                   - name of the MCDA method
 % EnemiesToEnd              - main score of the MCDA method
 % EnemiesMeanHealthRatio    - additional score of MCDA method
+% TracksCost				- second additional score of MCDA method
 
 %File reports - plot
 noOfRounds=size(scoreArray,1);

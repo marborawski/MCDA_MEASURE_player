@@ -101,7 +101,6 @@ for roundNo=1:noOfRounds
             EndStartHealthRatio(j,2)=1;
         end
     end
-
     E=[E EndBeginRatio(:,2) EndStartHealthRatio(:,2)];%C5 C6
     E(isnan(E))=0;
 
@@ -111,18 +110,10 @@ for roundNo=1:noOfRounds
     %Vector of criteria preference directions: 1-max, 2-min
     PrefDirection=[2 2 2 2 1 1];
     [E,W,PrefDirection,ind] = RemoveCriteria(E,W,PrefDirection);
-    %fh=@PROMETHEE;
-    %fh=@PROMETHEE_usual;
-    %fh=@PROMETHEE_q_p_thresholds;
-    %fh=@PROSA;
-     fh=@TOPSIS;
-     %fh=@VIKOR;
-     %fh=@VMCM;
-     %fh=@AHP;
-    %Score=fh(E,W,PrefDirection);%call function for PROMETHEE, PROSA, VMCM methods
+    fh=@TOPSIS;
+    %fh=@VIKOR;
     Score=fh(E,W,PrefDirection,2);%call function for TOPSIS method
     %Score=fh(E,W,PrefDirection,0.5);%call function for VIKOR method
-    %Score=fh(E,W,PrefDirection,10);%call function for AHP method
     funName=func2str(fh);
     [~,rank1]=sort(Score,'descend');%The number in rank1 indicates the path
     rank2=GenerateRanking(Score)';%The number in the rank2 means the position in the ranking
