@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--  Komenda dla serwera.  SetTowers oznacza nakaz zdefiniowania typow wiez.  -->
+<Command name="SetTowers">
+<!--  Lista typow wiez.  -->
+<SetTowers>
+<!--  Definicja typu wiezy. no - numer typu, count - maksymalna liczba wiez (wartosc ujemna oznacza dowolna liczbe wiez), speed - szybkosc rotacji wiezy, rateofFire - szybkostrzelnosc wiezy, force - sila z jaka wyrzucany jest pocisk, bulletStrength - ilosc zadanych ran, cost - koszt postawienia wiezy, type - nazwa typu wiezy, tag - rodzaj obiektu ktory atakowac bedzie wieza.  -->
+<Tower no="0" count="-10" speed="1000" rateofFire="1" force="1000" bulletStrength="5" cost="10" type="Tower" tag="Enemy">
+</Tower>
+		</SetTowers>
+</Command>
+</Data>

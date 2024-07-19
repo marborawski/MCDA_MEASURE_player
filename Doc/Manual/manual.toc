@@ -1,16 +1,22 @@
-\babel@toc {polish}{}
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}Game}{1}{section.2}%
-\contentsline {section}{\numberline {3}Biblioteka}{19}{section.3}%
+\contentsline {section}{\numberline {2}Game module}{1}{section.2}%
+\contentsline {section}{\numberline {3}Player module}{19}{section.3}%
 \contentsline {paragraph}{SendData}{19}{section.3}%
-\contentsline {paragraph}{NumberToName}{20}{lstnumber.-11.1}%
+\contentsline {paragraph}{NumberToName}{19}{lstnumber.-11.1}%
 \contentsline {paragraph}{ChangeBeginEnd}{20}{lstnumber.-12.1}%
 \contentsline {paragraph}{TilemapToXML}{20}{lstnumber.-13.1}%
-\contentsline {paragraph}{ParseXML}{21}{lstnumber.-15.33}%
-\contentsline {paragraph}{GetVectorFromCell}{22}{lstnumber.-19.3}%
-\contentsline {paragraph}{SetEnemies}{23}{lstnumber.-22.7}%
-\contentsline {paragraph}{SetTowers}{24}{lstnumber.-24.8}%
-\contentsline {paragraph}{StartEnemy}{25}{lstnumber.-26.8}%
-\contentsline {paragraph}{AddTower}{25}{lstnumber.-28.8}%
-\contentsline {paragraph}{GenerateTabular}{26}{lstnumber.-30.8}%
-\contentsline {paragraph}{GenerateTikzData}{27}{table.1}%
+\contentsline {paragraph}{Char2Code}{21}{lstnumber.-15.33}%
+\contentsline {paragraph}{Machine}{22}{lstnumber.-17.2}%
+\contentsline {paragraph}{ParseXML}{22}{lstnumber.-19.20}%
+\contentsline {paragraph}{GetVectorFromCell}{23}{lstnumber.-23.3}%
+\contentsline {paragraph}{SetEnemies}{24}{lstnumber.-26.7}%
+\contentsline {paragraph}{SetTowers}{25}{lstnumber.-28.8}%
+\contentsline {paragraph}{StartEnemy}{26}{lstnumber.-30.8}%
+\contentsline {paragraph}{AddTower}{26}{lstnumber.-32.8}%
+\contentsline {paragraph}{RemoveCriteria}{27}{lstnumber.-34.8}%
+\contentsline {paragraph}{TOPSIS}{28}{lstnumber.-36.11}%
+\contentsline {paragraph}{VIKOR}{29}{lstnumber.-38.11}%
+\contentsline {paragraph}{GenerateRanking}{29}{lstnumber.-40.11}%
+\contentsline {paragraph}{GenerateReport}{30}{lstnumber.-42.4}%
+\contentsline {paragraph}{GenerateTabular}{32}{figure.11}%
+\contentsline {paragraph}{GenerateTikzData}{33}{table.1}%

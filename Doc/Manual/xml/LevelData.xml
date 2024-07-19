@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<!--  Komenda dla serwera.  LevelData oznacza nakaz przeslania szczegolowych informacji o stanie gry.  -->
+<!--  Command for the server. LevelData means an order to send detailed information about the state of the game.  -->
 <Command name="LevelData">
 </Command>
 </Data>

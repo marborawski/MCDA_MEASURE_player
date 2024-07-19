@@ -6,8 +6,7 @@
 \usepackage{pgfplots}
 \usepackage{pgf-umlcd}
 
-\usepackage[polish]{babel}
-\usepackage[T1]{fontenc}
+
 \usepackage{graphicx}
 \graphicspath{ {./fig/} }
 
@@ -68,6 +67,21 @@
    ,keywordstyle=\color{cyan}
 }
 
+\lstdefinelanguage{HTML5}{
+  language=html,
+  sensitive=true,	
+  alsoletter={<>=-},	
+  morecomment=[s]{<!-}{-->},
+  tag=[s],
+  morestring=[s][\color{mauve}]{"}{"},
+  morestring=[s][\color{black}]{>}{<},
+  morecomment=[s][\color{dkgreen}]{!--}{--},
+  stringstyle=\color{black},
+  identifierstyle=\color{lightblue},
+  keywordstyle=\color{red},
+  morekeywords={xmlns,xsi,noNamespaceSchemaLocation,type,id,x,y,source,target,version,tool,transRef,roleRef,objective,eventually}% list your 
+  }
+
 %https://gist.github.com/sebald/3130827
 \usepackage{titlesec}
 \titleformat*{\subparagraph}{\itshape\mdseries}
@@ -76,7 +90,7 @@
 \tikzstyle{oneArrowStyle} = [-Stealth,line width = 1]
 \tikzstyle{oneArrowinverseStyle} = [Stealth-,line width = 1]
 
-\newcommand{\SoftwareName}{GTest }
+\newcommand{\SoftwareName}{MCDA MEASURE }
 
 \begin{document}
 
@@ -85,8 +99,8 @@
 \tableofcontents
 
 \input{Introduction}
-\input{Unity}
-\input{Matlab}
+\input{GameModule}
+\input{PlayerModule}
 
 \end{document}
 \endinput

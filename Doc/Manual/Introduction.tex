@@ -1,12 +1,12 @@
 
 \section{Introduction}
 
-W skład oprogramowania  \SoftwareName wchodzi moduł gry wykorzystujący silnik gry Unity oraz biblioteka wykonana w środowisku Matlab/Octave. Moduł gry może być sterowany za pomocą komend w których dane są zapisane formacie XML-a (fig.~\ref{Fig:architecture}). Odpowiada za wizualizację planszy gry oraz sterowanie jej przebiegiem. Domyślnie gra jest tak skonfigurowana, żeby nasłuchiwała na porcie 55001. Wpisany domyślnie adres (127.0.0.1) umożliwia łączenie się z grą tylko z komputera na którym jest ona zainstalowana (można to jednak zmienić).
+The \SoftwareName (Multi-Criteria Decision Analysis MEthods Assessment through SimUlation REsearch) software includes a game module using the Unity game engine and a library created in the Matlab/Octave environment. The game module can be controlled using commands in which data is saved in XML format (fig.~\ref{Fig:architecture}). Responsible for visualizing the game board and controlling its course. By default, the game is configured to listen on port 55001. The default address (127.0.0.1) allows you to connect to the game only from the computer on which it is installed (however, this can be changed).
 
- Biblioteka ma za zadanie ułatwić tworzyć oprogramowanie w Matlab-ie/Octave przeznaczone do testowania metod wspomagania decyzji.  Zawiera metody przygotowujące i formatujące komendy, które mają być przesyłane do gry. Umożliwia także dekodowanie otrzymanych od gry odpowiedzi. Dodatkową możliwością biblioteki jet konwersja tablic do formatu środowiska tabular Latex'a oraz formatu umożliwiającego odczytanie ich przez  moduł tworzenia wykresów pakietu tikz.
+The library is intended to facilitate the creation of software in Matlab/Octave intended for testing decision support methods. Contains methods for preparing and formatting commands to be sent to the game. It also allows you to decode the answers received from the game. An additional option of the library is the conversion of tables to the tabular Latex environment format and a format that allows them to be read by the tikz package's charting module.
 
 \begin{figure}
 \input{fig/architecture.tikz}
-\caption{Architektura systemu}
+\caption{System architecture}
 \label{Fig:architecture}
 \end{figure}

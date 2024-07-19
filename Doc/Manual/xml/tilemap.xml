@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<!--Informacja o tym, ze dalej bedzie definiowana plansza gry.-->
+<!--  Information that the game board will be further defined.  -->
 <Tilemap>
-<!--  Oznaczenie tabeli. Tabela zawiera tyle wierszy i kolumn ile wierszy i kolumn posiada plansza.   -->
+<!--  Table designation. The table contains as many rows and columns as the board has rows and columns.   -->
 	<Table>
 		<Row>
-<!--  Okreslenie rodzaju pojedynczego prostopadloscianu. Dopuszczalne typy to Ground i Water. Po prostopadloscianie typu Water moga poruszac sie przeciwnicy.   -->
+<!--  Specify the type of a single tile. The allowed types are Ground and Water. Enemies can move on the Water-type tile.   -->
 			<Cell><Data>Ground</Data></Cell>
 			<Cell><Data>Ground</Data></Cell>
 			<Cell><Data>Ground</Data></Cell>
@@ -21,7 +21,7 @@
 			<Cell><Data>Ground</Data></Cell>
 		</Row>
 		<Row>
-<!--  Okreslenie typu dla prostopadloscianow o specjalnych wlasnosciach. End oznacza koniec sciezki. Jest to miejsce, do ktorego maja dotrzec przeciwnicy.   -->
+<!--  Type definition for tile with special properties. End means the end of the track. This is the place where the opponents must reach.  -->
 			<Cell><Data type="End">Water</Data></Cell>
 			<Cell><Data>Water</Data></Cell>
 			<Cell><Data>Water</Data></Cell>
@@ -34,7 +34,7 @@
 			<Cell><Data>Water</Data></Cell>
 			<Cell><Data>Water</Data></Cell>
 			<Cell><Data>Water</Data></Cell>
-<!--  Okreslenie typu dla prostopadloscianow o specjalnych wlasnosciach.  Begin oznacza poczatek sciezki. Jest to miejsce w ktorym pojawiaja sie przeciwnicy.   -->
+<!--  Type definition for tile with special properties. Begin means the beginning of the path. This is the place where enemies appear.  -->
 			<Cell><Data type="Begin">Water</Data></Cell>
 		</Row>
 		<Row>

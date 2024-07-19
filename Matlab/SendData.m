@@ -4,7 +4,7 @@ function txt = SendData(IPAddressSend,portSend,data,name, args)
 % IPAddressSend - server ip address
 % portSend      - server port
 % data          - data packet sent to the server
-% name          - control information sent to the server
+% name          - determines how the data is interpreted
 % args          - arguments related to control information
 % returns the response from the server in xml format
 

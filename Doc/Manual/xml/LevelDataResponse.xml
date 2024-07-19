@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Answer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="LevelData">
-<!--  Lista sciezek oraz zbior informacji o stanie gry.  beginTileCount - liczba punktow poczatkowych, endTileCount - liczba punktow koncowych. -->
+<!--  List of paths and a collection of information about the game state. beginTileCount - number of starting points, endTileCount - number of ending points. -->
   <LevelPath beginTileCount="4" endTileCount="4">
     <Path cost="12" shotAtTiles="3" towers="1" sumTowerPlace="26" hits="0" nohits="0">
       <Begin x="1" y="12" no="0">
@@ -11,9 +11,9 @@
         <Enemy type="Bottle" enemies="0" endMeanHealth="0" />
         <Enemy type="Paper" enemies="0" endMeanHealth="0" />
       </End>
-<!--  Tabela ze wspolrzednymi 3D kafelek terenu. -->
+<!--  Table with 3D coordinates of terrain tiles. -->
       <Table>
-<!--  Wspolrzedne x,y,z kafelek terenu. -->
+<!--  The x,y,z coordinates of the terrain tiles. -->
         <Element x="1" y="0" z="12" />
         <Element x="1" y="0" z="11" />
         <Element x="1" y="0" z="10" />
@@ -115,10 +115,10 @@
         <Element x="14" y="0" z="0" />
       </Table>
     </Path>
-<!--  Informacje o typie przeciwnika. count - maksymalna liczba przeciwnikow (wartosc ujemna oznacza dowolna liczbe przeciwnikow), speed - szybkosc przemieszczania sie przeciwnikow, startHealth - ilosc poczatkowego zycia, armour - stopien odpornosci na strzaly wiez, destroyCoins - kwota jaka dosteja wieze za zniszczenie przeciwnika, cost - koszt stworzenia i wyslania przeciwnika, coinsToEnd - kwota jaka dostaja przeciwnicy za dotarcie przeciwnika do punktu koncowego, no - numer typu przeciwnika,  type - nazwa typu przeciwnika, tag - nazwa rodzaju obiektu.   -->
+<!--  Information about the opponent's type. count - the maximum number of opponents (a negative value means any number of opponents), speed - the speed of movement of opponents, startHealth - the amount of initial life, armor - the degree of resistance to arrows of the tower, destroyCoins - the amount the tower receives for destroying an opponent, cost - the cost of creating and sending the opponent, coinsToEnd - the amount that the opponents receive for reaching the end point, no - the opponent's type number, type - the name of the opponent's type, tag - the name of the object type.   -->
     <Enemy count="-1" speed="1" startHealth="5" armour="1" destroyCoins="20" cost="10" coinsToEnd="15" no="0" type="Bottle" tag="Enemy" />
     <Enemy count="-1" speed="2" startHealth="20" armour="2" destroyCoins="30" cost="30" coinsToEnd="40" no="1" type="Paper" tag="Enemy" />
-<!--  Informacje o typie wiezy. count - maksymalna liczba wiez (wartosc ujemna oznacza dowolna liczbe wiez), speed - szybkosc obrotu wiezy, rateofFire - szybkostrzelnosc wiezy, force - sila z jaka wyrzucany jest pocisk, bulletStrength - ilosc zadanych ran przez pocisk, cost - koszt postawienia wiezy, no - numer typu, type - nazwa typu wiezy, tag - rodzaj obiektu ktory bedzie atakowac wieza.  -->
+<!--  Information about the tower type. count - the maximum number of towers (a negative value means any number of towers), speed - the speed of rotation of the tower, rateofFire - the rate of fire of the tower, force - the force with which the bullet is thrown, bulletStrength - the number of wounds caused by the bullet, cost - the cost of erecting the tower, no - type number, type - name of the tower type, tag - type of object that will be attacked by the tower.  -->
     <Tower count="-10" speed="1000" rateofFire="1" force="1000" bulletStrength="5" cost="10" no="0" type="Tower" tag="Enemy" />
     <Waves cash="150" />
     <Towers cash="90" />

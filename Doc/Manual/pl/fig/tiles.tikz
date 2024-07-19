@@ -1,0 +1,8 @@
+\begin{tikzpicture}
+\node[anchor=center,inner sep=0, label=below:{Ziemia}] at (-4,3) {\includegraphics[width=2cm]{images/tileGround.png}};
+\node[anchor=center,inner sep=0, label=below:{Woda}] at (-4,1) {\includegraphics[width=2cm]{images/tileWater.png}};
+\node[anchor=center,inner sep=0,label=below:{Prosta}] (tikz) at (-1.5,1) {\includegraphics[width=2cm]{images/tileWaterStraight.png}};
+\node[anchor=center,inner sep=0,label=below:{Zakręt}] (tikz) at (1,1) {\includegraphics[width=2cm]{images/tileWaterCurve.png}};
+\node[anchor=center,inner sep=0,label=below:{Skrzyżowanie 1}] (tikz) at (3.5,1) {\includegraphics[width=2cm]{images/tileWaterIntersection1.png}};
+\node[anchor=center,inner sep=0,label=below:{Skrzyżowanie 2}] (tikz) at (6.2,1) {\includegraphics[width=2cm]{images/tileWaterIntersection2.png}};
+\end{tikzpicture}

@@ -1,5 +1,5 @@
 function [Q,S,R]=VIKOR(E,W,PrefDirection,q)
-%VIKOR function
+%VIKOR function. Calculates the values ​​of alternative measures using the VIKOR method.
 % E             - data table, the columns are the criteria and the rows are the alternatives
 % W             - criteria weights
 % PrefDirection - criteria Preference direction (1-max;2-min)
@@ -28,7 +28,7 @@ function [Q,S,R]=VIKOR(E,W,PrefDirection,q)
           end
           if E(ii,jj) > xL(jj)
             xL(jj) = E(ii,jj);
-          end          
+          end
         end
       end
     end
@@ -50,5 +50,5 @@ function [Q,S,R]=VIKOR(E,W,PrefDirection,q)
   S = sum(E_');
   R = max(E_');
   Q = q*((S - min(S))/(max(S) - min(S))) + (1 - q)*((R - min(R))/(max(R) - min(R)))
-    
+
 end

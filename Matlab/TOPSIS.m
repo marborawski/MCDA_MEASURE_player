@@ -1,5 +1,5 @@
 function [S]=TOPSIS(E,W,PrefDirection,p)
-%TOPIS function
+%TOPIS function. Calculates the values ​​of the measure of alternatives using the TOPSIS method.
 %
 % E             - data table, the columns are the criteria and the rows are the alternatives
 % W             - criteria weights

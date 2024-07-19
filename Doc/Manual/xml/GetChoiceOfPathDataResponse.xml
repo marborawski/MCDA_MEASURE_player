@@ -1,19 +1,18 @@
 <?xml version="1.0"?>
 <Answer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="ChoiceOfPathData">
-<!--  Lista sciezek.  beginTileCount - liczba punktow poczatkowych, endTileCount - liczba punktow koncowych. -->
+<!--  Track list. beginTileCount - number of starting points, endTileCount - number of end points. -->
   <ChoiceOfPath beginTileCount="4" endTileCount="4">
-<!--  Informacje o sciezce.  cost - koszt przejscia sciezki, shotAtTiles - liczba ostrzeliwanych kafelkow sciezki, towers - liczba wiez przy sciezce, sumTowerPlace - liczba wolnych miejsc do postawienia wiez (tak aby ostrzeliwaly sciezke), hits - liczba pociskow ktore trafily w przeciwnika, nohits - liczba pociskow, ktore nie trafily w przeciwnika. -->
+<!--  Path information. cost - the cost of crossing the path, shotAtTiles - the number of path tiles shot at, towers - the number of towers along the path, sumTowerPlace - the number of free places to place towers (so that they fire at the path), hits - the number of bullets that hit the opponent, nohits - the number of bullets that they didn't hit the opponent. -->
     <Path cost="12" shotAtTiles="3" towers="1" sumTowerPlace="26" hits="0" nohits="0">
-<!--  Poczatek sciezki.  x, y - wspolrzedne poczatku sciezki, no - numer punktu poczatkowego. -->
+<!--  Beginning of the path. x, y - coordinates of the beginning of the path, no - number of the starting point. -->
       <Begin x="1" y="12" no="0">
-<!--  Poczatek sciezki.  x, y - wspolrzedne poczatku sciezki, no - numer punktu poczatkowego. -->
-<!--  Informacja o przeciwnikach, ktorzy weszli sciezke.  type  - nazwa typu przeciwnika, enemies - liczba przeciwnikow, ktorzy weszli na sciezke, endMeanHealth - sredni poziom zycia przeciwnikow, ktorzy wchodza na sciezke.  -->
+<!--  Information about enemies that have entered the path. type - name of the enemy type, enemies - number of enemies who entered the path, endMeanHealth - average health level of enemies who entered the path.  -->
         <Enemy type="Bottle" enemies="0" endMeanHealth="NaN" />
         <Enemy type="Paper" enemies="0" endMeanHealth="NaN" />
       </Begin>
-<!--  Koniec sciezki.  x, y - wspolrzedne poczatku sciezki, no - numer punktu koncowego. -->
+<!--  End of track. x, y - coordinates of the beginning of the path, no - number of the end point. -->
       <End x="1" y="0" no="0">
-<!--  Informacja o przeciwnikach, ktorzy przeszli sciezke.  type  - nazwa typu przeciwnika, enemies - liczba przeciwnikow, ktorzy dotarli do konca sciezki, endMeanHealth - sredni poziom zycia przeciwnikow, ktorzy dotarli do konca sciezki.  -->
+<!--  Information about enemies that have passed the path. type - name of the enemy type, enemies - number of enemies who reached the end of the path, endMeanHealth - average health level of enemies who reached the end of the path.  -->
         <Enemy type="Bottle" enemies="0" endMeanHealth="0" />
         <Enemy type="Paper" enemies="0" endMeanHealth="0" />
       </End>
@@ -52,9 +51,9 @@
       </End>
       <Table />
     </Path>
-<!--  Dostepne srodki dla przeciwnikow.  -->
+<!--  Resources available for opponents.  -->
     <Waves cash="150" />
-<!--  Dostepne srodki dla menadzera wiez.  -->
+<!--  Available funds for the tower manager.  -->
     <Towers cash="90" />
   </ChoiceOfPath>
 </Answer>

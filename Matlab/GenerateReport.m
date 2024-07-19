@@ -15,13 +15,15 @@ for i = 1:size(scoreArray,2)
   legendDescription{i} = ['Path no ' num2str(i)];
 end
 fig=figure;
-fig.Position(3:4) = [720 400];
+if exist('OCTAVE_VERSION', 'builtin') <= 0
+  fig.Position(3:4) = [720 400];
+end
 hold on;
-title(funName,' - Score dependence on iteration');
+title([funName ' - Score dependence on iteration']);
 xlim([0.5 noOfRounds+0.5]);
 xticks([1:noOfRounds]);
 ylim([min(min(scoreArray))-0.1 max(max(scoreArray))+0.1]);
-yticks([round(min(min(scoreArray)),1):(round(max(max(scoreArray)),1)-round(min(min(scoreArray)),1))/10:round(max(max(scoreArray)),1)]);
+yticks([round(min(min(scoreArray))):(round(max(max(scoreArray)))-round(min(min(scoreArray))))/10:round(max(max(scoreArray)))]);
 grid on;
 xlabel('Iteration (Round)');
 ylabel('Score');
@@ -31,11 +33,11 @@ saveas(fig,fileNamePlot,'png');
 
 %File reports - table html
 scoreArray=[[1:size(scoreArray,1)]' scoreArray];
-fid=fopen(fileNameTab,'w'); 
+fid=fopen(fileNameTab,'w');
 fprintf(fid,'<html>\n<body>\n');
 fprintf(fid,'<p>MCDA Method: %s</p>\n<p>Enemies to end: %i</p>\n<p>Enemies mean health: %f</p>\n<p>Tracks cost: %i</p>\n<table>\n',funName,EnemiesToEnd,EnemiesMeanHealthRatio,TracksCost);
 fprintf(fid,'<tr>\n<th>No.</th>');
-for i = 1:size(scoreArray,2)-1  
+for i = 1:size(scoreArray,2)-1
     fprintf(fid,'<th>Path %i</th>',i);
 end
 fprintf(fid,'\n</tr>\n');

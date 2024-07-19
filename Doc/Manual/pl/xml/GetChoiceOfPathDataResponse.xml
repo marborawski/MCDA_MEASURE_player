@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<Answer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="ChoiceOfPathData">
+<!--  Lista sciezek.  beginTileCount - liczba punktow poczatkowych, endTileCount - liczba punktow koncowych. -->
+  <ChoiceOfPath beginTileCount="4" endTileCount="4">
+<!--  Informacje o sciezce.  cost - koszt przejscia sciezki, shotAtTiles - liczba ostrzeliwanych kafelkow sciezki, towers - liczba wiez przy sciezce, sumTowerPlace - liczba wolnych miejsc do postawienia wiez (tak aby ostrzeliwaly sciezke), hits - liczba pociskow ktore trafily w przeciwnika, nohits - liczba pociskow, ktore nie trafily w przeciwnika. -->
+    <Path cost="12" shotAtTiles="3" towers="1" sumTowerPlace="26" hits="0" nohits="0">
+<!--  Poczatek sciezki.  x, y - wspolrzedne poczatku sciezki, no - numer punktu poczatkowego. -->
+      <Begin x="1" y="12" no="0">
+<!--  Poczatek sciezki.  x, y - wspolrzedne poczatku sciezki, no - numer punktu poczatkowego. -->
+<!--  Informacja o przeciwnikach, ktorzy weszli sciezke.  type  - nazwa typu przeciwnika, enemies - liczba przeciwnikow, ktorzy weszli na sciezke, endMeanHealth - sredni poziom zycia przeciwnikow, ktorzy wchodza na sciezke.  -->
+        <Enemy type="Bottle" enemies="0" endMeanHealth="NaN" />
+        <Enemy type="Paper" enemies="0" endMeanHealth="NaN" />
+      </Begin>
+<!--  Koniec sciezki.  x, y - wspolrzedne poczatku sciezki, no - numer punktu koncowego. -->
+      <End x="1" y="0" no="0">
+<!--  Informacja o przeciwnikach, ktorzy przeszli sciezke.  type  - nazwa typu przeciwnika, enemies - liczba przeciwnikow, ktorzy dotarli do konca sciezki, endMeanHealth - sredni poziom zycia przeciwnikow, ktorzy dotarli do konca sciezki.  -->
+        <Enemy type="Bottle" enemies="0" endMeanHealth="0" />
+        <Enemy type="Paper" enemies="0" endMeanHealth="0" />
+      </End>
+      <Table />
+    </Path>
+    <Path cost="15" shotAtTiles="3" towers="1" sumTowerPlace="31" hits="0" nohits="0">
+      <Begin x="3" y="12" no="1">
+        <Enemy type="Bottle" enemies="0" endMeanHealth="NaN" />
+        <Enemy type="Paper" enemies="0" endMeanHealth="NaN" />
+      </Begin>
+      <End x="4" y="0" no="1">
+        <Enemy type="Bottle" enemies="0" endMeanHealth="0" />
+        <Enemy type="Paper" enemies="0" endMeanHealth="0" />
+      </End>
+      <Table />
+    </Path>
+    <Path cost="13" shotAtTiles="0" towers="0" sumTowerPlace="34" hits="0" nohits="0">
+      <Begin x="8" y="10" no="2">
+        <Enemy type="Bottle" enemies="0" endMeanHealth="NaN" />
+        <Enemy type="Paper" enemies="0" endMeanHealth="NaN" />
+      </Begin>
+      <End x="10" y="1" no="2">
+        <Enemy type="Bottle" enemies="0" endMeanHealth="0" />
+        <Enemy type="Paper" enemies="0" endMeanHealth="0" />
+      </End>
+      <Table />
+    </Path>
+    <Path cost="19" shotAtTiles="0" towers="0" sumTowerPlace="38" hits="0" nohits="0">
+      <Begin x="11" y="12" no="3">
+        <Enemy type="Bottle" enemies="0" endMeanHealth="NaN" />
+        <Enemy type="Paper" enemies="0" endMeanHealth="NaN" />
+      </Begin>
+      <End x="14" y="0" no="3">
+        <Enemy type="Bottle" enemies="0" endMeanHealth="0" />
+        <Enemy type="Paper" enemies="0" endMeanHealth="0" />
+      </End>
+      <Table />
+    </Path>
+<!--  Dostepne srodki dla przeciwnikow.  -->
+    <Waves cash="150" />
+<!--  Dostepne srodki dla menadzera wiez.  -->
+    <Towers cash="90" />
+  </ChoiceOfPath>
+</Answer>

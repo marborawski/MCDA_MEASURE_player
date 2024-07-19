@@ -1,8 +1,8 @@
 \begin{tikzpicture}
 \node[anchor=center,inner sep=0, label=below:{Ground}] at (-4,3) {\includegraphics[width=2cm]{images/tileGround.png}};
 \node[anchor=center,inner sep=0, label=below:{Water}] at (-4,1) {\includegraphics[width=2cm]{images/tileWater.png}};
-\node[anchor=center,inner sep=0,label=below:{straight}] (tikz) at (-1.5,1) {\includegraphics[width=2cm]{images/tileWaterStraight.png}};
-\node[anchor=center,inner sep=0,label=below:{curve}] (tikz) at (1,1) {\includegraphics[width=2cm]{images/tileWaterCurve.png}};
-\node[anchor=center,inner sep=0,label=below:{intersection 1}] (tikz) at (3.5,1) {\includegraphics[width=2cm]{images/tileWaterIntersection1.png}};
-\node[anchor=center,inner sep=0,label=below:{intersection 2}] (tikz) at (6,1) {\includegraphics[width=2cm]{images/tileWaterIntersection2.png}};
+\node[anchor=center,inner sep=0,label=below:{Straight}] (tikz) at (-1.5,1) {\includegraphics[width=2cm]{images/tileWaterStraight.png}};
+\node[anchor=center,inner sep=0,label=below:{Curve}] (tikz) at (1,1) {\includegraphics[width=2cm]{images/tileWaterCurve.png}};
+\node[anchor=center,inner sep=0,label=below:{Intersection 1}] (tikz) at (3.5,1) {\includegraphics[width=2cm]{images/tileWaterIntersection1.png}};
+\node[anchor=center,inner sep=0,label=below:{Intersection 2}] (tikz) at (6,1) {\includegraphics[width=2cm]{images/tileWaterIntersection2.png}};
 \end{tikzpicture}

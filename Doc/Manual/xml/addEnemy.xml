@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<!--  Komenda dla serwera.  StartEnemy oznacza nakaz utworzenia przeciwnika i wypuszczenia go wybrana sciezka.  -->
-<Command name="StartEnemy">	
-<!--  Utworzenie przeciwnika. no - typ przeciwnika.  -->
+<!--  Command for the server. StartEnemy means the order to create an enemy and send him out on a selected path.  -->
+<Command name="StartEnemy">
+<!--  Create an opponent. no - type of opponent.  -->
 <StartEnemy no="1">
-<!--  Okreslenie punktu startowego. no - numer punktu.  -->
+<!--  Specify the starting point. no - point number.  -->
 			<Begin no="1">
 			</Begin>
-<!--  Okreslenie punktu koncowego. no - numer punktu.  -->
+<!--  Specify an end point. no - point number.  -->
 			<End no="2">
 			</End>
 		</StartEnemy>

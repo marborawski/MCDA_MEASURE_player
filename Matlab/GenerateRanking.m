@@ -1,4 +1,8 @@
 function ranking=GenerateRanking(v)
+% Tworzy ranking alternatyw
+%
+% v - Vector of alternative performances
+% Zwraca pozycje w rankingu 
 	%if vector of alternative performances is not empty
 	if ~isnan(v)
 		%check vector length
