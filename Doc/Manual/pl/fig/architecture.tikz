@@ -1,7 +1,7 @@
 \begin{tikzpicture}
 \node[rectangle,draw,minimum width = 3.5cm,minimum height = 1.5cm,label=above:{Gracz}] (r) at (-2.5,4.5) {Matlab/Octave};
 \node[anchor=center,inner sep=0,label=above:{Gra}] (game) at (4,4.5) {\includegraphics[width=3cm]{images/game.png}} ;
-\node[anchor=center,inner sep=0, label=below:{Raport w Latex-u}] (tabaular) at (-2.5,1) {\includegraphics[height=2.5cm]{images/latexReports.png}};
+\node[anchor=center,inner sep=0, label=below:{Raporty}] (tabaular) at (-2.5,1) {\includegraphics[height=2.5cm]{images/latexReports.png}};
 \draw[oneArrowinverseStyle] (r.east) + (0,-0.1) -- ++(3.3,-0.1) node[midway,below]{Odpowiedź};
 \draw[oneArrowStyle] (r.east) + (0,0.1) -- ++(3.3,0.1) node[midway,above]{Komenda};
 \draw[oneArrowStyle] (r) -- (tabaular);
